@@ -18,7 +18,7 @@ import recommonmark
 
 # -- Project information -----------------------------------------------------
 
-project = 'The Room of Requirement'
+project = 'Ess_Documentation'
 copyright = '2020, AdamZh0u'
 author = 'AdamZh0u'
 

@@ -1,5 +1,6 @@
 Welcome to The Room of Requirement!
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This is an open source book written for myself to review my tools. 
 
 .. toctree::
    :maxdepth: 2
