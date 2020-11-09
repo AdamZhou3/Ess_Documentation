@@ -10,8 +10,8 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
+import os
+import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
 # -- Project information -----------------------------------------------------
@@ -31,7 +31,7 @@ release = '0.1.1'
 # ones.
 
 
-extensions = ['recommonmark',
+extensions = ['recommonmark','chinese_search',
         'sphinx_markdown_tables',
         'sphinxemoji.sphinxemoji',
    'sphinx.ext.autodoc',
@@ -74,8 +74,35 @@ html_theme = 'cloud'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['../_static']
 
 source_parsers = {
    '.md': 'recommonmark.parser.CommonMarkParser',
 }
+
+# --Latex ----------------------------------------------------------------
+latex_elements={# The paper size ('letterpaper' or 'a4paper').
+'papersize':'a4paper',# The font size ('10pt', '11pt' or '12pt').
+'pointsize':'12pt','classoptions':',oneside','babel':'',#必须
+'inputenc':'',#必须
+'utf8extra':'',#必须
+# Additional stuff for the LaTeX preamble.
+'preamble': r"""
+\usepackage{xeCJK}
+\usepackage{indentfirst}
+\setlength{\parindent}{2em}
+\setCJKmainfont{WenQuanYi Micro Hei}
+\setCJKmonofont[Scale=0.9]{WenQuanYi Micro Hei Mono}
+\setCJKfamilyfont{song}{WenQuanYi Micro Hei}
+\setCJKfamilyfont{sf}{WenQuanYi Micro Hei}
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+"""}
+
+# +++++++++++++++++++++++++++++++++++++++++++++++
+_exts = "../exts"
+sys.path.append(os.path.abspath(_exts))
+
+html_js_files = [
+    'js/readmore.js',]
+

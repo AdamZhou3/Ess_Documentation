@@ -13,4 +13,4 @@ cloud_sptheme
 
 sphinx-autobuild
 sphinx
-insegel
+#insegel
