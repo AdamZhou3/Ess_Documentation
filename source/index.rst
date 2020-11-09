@@ -6,14 +6,22 @@ Hi, I am Adam Zhou. This is an open source book written for myself to review my 
    :maxdepth: 2
    :caption: Contents 1:
 
-   11_QM.rst
-   12_Econometrics.rst
-
+   A1_QM.rst
+   A2_Econometrics.rst
+   
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents 2:
+   :caption: Python:
 
-   21_Sphinx.rst
-   22_Python.rst
+   B1_Sphinx.rst
+   B2_Python.rst
+   B3_pandas.rst
    
+.. toctree::
+   :maxdepth: 2
+   :caption: Javascript:
+
+   B1_Sphinx.rst
+   B2_Python.rst
+   B3_pandas.rst
