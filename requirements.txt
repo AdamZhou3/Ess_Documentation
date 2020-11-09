@@ -1,12 +1,16 @@
 # markdown suport
 recommonmark
+
 # markdown table suport
 sphinx-markdown-tables
+
 #emoji
 sphinxemoji
-
-# theme default rtd
 
 # crate-docs-theme
 sphinx-rtd-theme
 cloud_sptheme
+
+sphinx-autobuild
+sphinx
+insegel

@@ -1,4 +1,5 @@
 # An Introduction to Quantitative Thinking  
+
 1. Understand the structure and focus of the module.
 2. Consider the different roles of quantitative methods and their relevance in your work.
 3. Develop a method for tackling quantitative problems.
