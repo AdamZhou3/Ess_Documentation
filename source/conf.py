@@ -50,20 +50,20 @@ html_theme = 'cloud'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['../_static']
 html_js_files = [
-    'js/baidutongji.js',]
+    'js/baidutongji.js', ]
 
 source_parsers = {
-   '.md': 'recommonmark.parser.CommonMarkParser',
+    '.md': 'recommonmark.parser.CommonMarkParser',
 }
 
 # --Latex ----------------------------------------------------------------
-latex_elements={# The paper size ('letterpaper' or 'a4paper').
-'papersize':'a4paper',# The font size ('10pt', '11pt' or '12pt').
-'pointsize':'12pt','classoptions':',oneside','babel':'',#必须
-'inputenc':'',#必须
-'utf8extra':'',#必须
-# Additional stuff for the LaTeX preamble.
-'preamble': r"""
+latex_elements = {  # The paper size ('letterpaper' or 'a4paper').
+    'papersize': 'a4paper',  # The font size ('10pt', '11pt' or '12pt').
+    'pointsize': '12pt', 'classoptions': ',oneside', 'babel': '',  # 必须
+    'inputenc': '',  # 必须
+    'utf8extra': '',  # 必须
+    # Additional stuff for the LaTeX preamble.
+    'preamble': r"""
 \usepackage{xeCJK}
 \usepackage{indentfirst}
 \setlength{\parindent}{2em}
@@ -73,27 +73,27 @@ latex_elements={# The paper size ('letterpaper' or 'a4paper').
 \setCJKfamilyfont{sf}{WenQuanYi Micro Hei}
 \XeTeXlinebreaklocale "zh"
 \XeTeXlinebreakskip = 0pt plus 1pt
-"""}
+      """}
 
 # +extensions++++++++++++++++++++++++++++++++++++++++++++++
 
 _exts = "../exts"
 sys.path.append(os.path.abspath(_exts))
 
-extensions = ['recommonmark','chinese_search',
-        'sphinx_markdown_tables',
-        'sphinxemoji.sphinxemoji',
-   'sphinx.ext.autodoc',
-   'sphinx.ext.doctest',
-   'sphinx.ext.intersphinx',
-   'sphinx.ext.todo',
-   'sphinx.ext.coverage',
-   'sphinx.ext.mathjax',
-   'sphinx.ext.ifconfig',
-   'sphinx.ext.viewcode',
-   'sphinx.ext.githubpages',
-   # Auto-generate section labels.
-    'sphinx.ext.autosectionlabel',
- ]
+extensions = ['recommonmark',
+              'chinese_search',
+              'sphinx_markdown_tables',
+              'sphinxemoji.sphinxemoji',
+              'sphinx.ext.autodoc',
+              'sphinx.ext.doctest',
+              'sphinx.ext.intersphinx',
+              'sphinx.ext.todo',
+              'sphinx.ext.coverage',
+              'sphinx.ext.mathjax',
+              'sphinx.ext.ifconfig',
+              'sphinx.ext.viewcode',
+              'sphinx.ext.githubpages',
+              # Auto-generate section labels.
+              'sphinx.ext.autosectionlabel',
+              ]
 autosectionlabel_prefix_document = True
-
