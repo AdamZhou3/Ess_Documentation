@@ -1,6 +1,6 @@
 Welcome to The Room of Requirement!
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This is an open source book written for myself to review my tools. 
+Hi, I am Adam Zhou. This is an open source book written for myself to review my tools. Enjoy!
 
 .. toctree::
    :maxdepth: 2
@@ -16,10 +16,4 @@ This is an open source book written for myself to review my tools.
 
    21_Sphinx.rst
    22_Python.rst
-
-Indices and tables
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   
