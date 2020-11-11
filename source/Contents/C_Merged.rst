@@ -5,9 +5,6 @@
 Sphinx
 ======
 
-title: Sphinx
--------------
-
 Sphinx 简单入门
 ---------------
 
@@ -2214,11 +2211,6 @@ https://pandoc.org/MANUAL.html
 
 gee
 ===
-
-----
-
-title: GEE
-----------
 
 Documents
 ---------
@@ -5297,9 +5289,6 @@ maxPixels:1e13
 
 Python
 ======
-
-C23 Python
-----------
 
 .. code-block:: python
 

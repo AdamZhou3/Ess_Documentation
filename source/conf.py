@@ -165,7 +165,7 @@ html_title = "%s v%s" % (project, release)
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-#html_logo = os.path.join("../_static", "logo.png")
+html_logo = os.path.join("../_static", "logo.png")
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -175,7 +175,7 @@ html_title = "%s v%s" % (project, release)
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['../_static']
 html_js_files = [
     'js/baidutongji.js', 
 ]
@@ -189,10 +189,10 @@ html_js_files = [
 html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-# html_sidebars = {
-    # '**': ['searchbox.html', 'globaltoc.html',
-        # #'localtoc.html'
-        # ]}
+html_sidebars = {
+    '**': ['searchbox.html', 'globaltoc.html',
+        #'localtoc.html'
+        ]}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
@@ -264,7 +264,7 @@ latex_documents = [
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
-##latex_logo = None
+latex_logo = None
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
