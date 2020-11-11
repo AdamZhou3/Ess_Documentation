@@ -3,7 +3,7 @@ sphinx-autobuild
 sphinx
 
 ## exts
-git+https://github.com/eli-collins/sphinxcontrib-fulltoc.git
+sphinxcontrib-fulltoc
 
 ## theme
 # crate-docs-theme
