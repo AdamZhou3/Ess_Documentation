@@ -13,7 +13,7 @@ Hi, I am Adam Zhou. This is an open source book written for myself to review my 
    
 .. toctree::
    :maxdepth: 1
-   :caption: Part A : URBAN
+   :caption: Part A URBAN
    :numbered:
    :glob:
    
@@ -21,7 +21,7 @@ Hi, I am Adam Zhou. This is an open source book written for myself to review my 
    
 .. toctree::
    :maxdepth: 1
-   :caption: Part B : COMPLEXITY
+   :caption: Part B COMPLEXITY
    :numbered:
    :glob:
    
@@ -29,7 +29,7 @@ Hi, I am Adam Zhou. This is an open source book written for myself to review my 
    
 .. toctree::
    :maxdepth: 1
-   :caption: Part C : COMPUTER
+   :caption: Part C COMPUTER
    :numbered:
    :glob:
    
@@ -37,7 +37,7 @@ Hi, I am Adam Zhou. This is an open source book written for myself to review my 
    
 .. toctree::
    :maxdepth: 1
-   :caption: Part D : LITERATURE
+   :caption: Part D LITERATURE
    :numbered:
    :glob:
    
