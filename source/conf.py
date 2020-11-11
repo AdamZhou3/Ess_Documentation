@@ -71,7 +71,7 @@ source_suffix = '.rst'
 source_encoding = 'utf-8'
 
 # The master toctree document. ??
-# master_doc = 'contents'
+master_doc = 'contents'
 
 # The frontpage document. name of index doc
 index_doc = 'index'
