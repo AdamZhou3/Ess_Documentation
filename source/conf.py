@@ -71,7 +71,7 @@ source_suffix = '.rst'
 source_encoding = 'utf-8'
 
 # The master toctree document. ??
-master_doc = 'contents'
+master_doc = 'toc'
 
 # The frontpage document. name of index doc
 index_doc = 'index'
@@ -190,7 +190,10 @@ html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
 html_sidebars = {
-    '**': ['searchbox.html', 'globaltoc.html']}
+    '**': ['searchbox.html', 
+        'globaltoc.html',
+        #'localtoc.html'
+        ]}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.

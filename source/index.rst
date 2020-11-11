@@ -46,4 +46,4 @@ Hi! This is an open source book written for myself to review my tools.
 .. toctree::
    :caption: About Me
    
-   me
+   aboutme
