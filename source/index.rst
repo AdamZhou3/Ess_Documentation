@@ -5,11 +5,9 @@ Hi, I am Adam Zhou. This is an open source book written for myself to review my 
 
 .. toctree::
    :maxdepth: 1
-   :titlesonly:
    :caption: Part X
    :numbered:
    :glob:
-   :name: X
   
    Contents/X*
    
