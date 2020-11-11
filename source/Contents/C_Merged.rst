@@ -5,8 +5,6 @@
 Sphinx
 ======
 
-----
-
 title: Sphinx
 -------------
 
