@@ -8,7 +8,7 @@ git+https://github.com/eli-collins/sphinxcontrib-fulltoc.git
 ## theme
 # crate-docs-theme
 # sphinx-rtd-theme
-cloud_sptheme==1.10.1
+cloud_sptheme>1.10
 #insegel
 
 ## markdown suport
