@@ -25,7 +25,7 @@ release = '0.1.1'
 # ones.
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ['../_templates']
 
 master_doc = "index"
 

@@ -5,7 +5,7 @@
 3. Develop a method for tackling quantitative problems.
 4. Consider how to formulate a research question and structure a piece of quantitative writing  
 
-![image-20201107210923020](./img/image-20201107210923020.png)
+![image-20201107210923020](http://www.zzzhou.me/images/2020/11/10/image-20201108104339605.png)
 
 ## Fermi Estimation Problems  
 
