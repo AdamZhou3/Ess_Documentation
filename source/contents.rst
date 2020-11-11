@@ -1,7 +1,5 @@
-Welcome!
-========
-
-Hi! This is an open source book written for myself to review my tools.
+Table Of Contents
+=================
 
 .. toctree::
    :maxdepth: 1
@@ -13,7 +11,7 @@ Hi! This is an open source book written for myself to review my tools.
    
 .. toctree::
    :maxdepth: 1
-   :caption: Part A: URBAN
+   :caption: Part A URBAN
    :numbered:
    :glob:
    
@@ -21,7 +19,7 @@ Hi! This is an open source book written for myself to review my tools.
    
 .. toctree::
    :maxdepth: 1
-   :caption: Part B: COMPLEXITY
+   :caption: Part B COMPLEXITY
    :numbered:
    :glob:
    
@@ -29,7 +27,7 @@ Hi! This is an open source book written for myself to review my tools.
    
 .. toctree::
    :maxdepth: 1
-   :caption: Part C: COMPUTER
+   :caption: Part C COMPUTER
    :numbered:
    :glob:
    
@@ -37,13 +35,12 @@ Hi! This is an open source book written for myself to review my tools.
    
 .. toctree::
    :maxdepth: 1
-   :caption: Part D: LITERATURE
+   :caption: Part D LITERATURE
    :numbered:
    :glob:
    
    Contents/D*
    
 .. toctree::
-   :caption: About Me
-   
-   me
+
+   About Me <me>
