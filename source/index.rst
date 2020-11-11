@@ -1,21 +1,46 @@
-Welcome to The Room of Requirement!
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Welcome!
+========
+
 Hi, I am Adam Zhou. This is an open source book written for myself to review my tools.
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents A:
-
-   TOC/Part_A.rst
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents B:
-
-   TOC/Part_B.rst
+   :maxdepth: 1
+   :titlesonly:
+   :caption: Part X
+   :numbered:
+   :glob:
+   :name: X
+  
+   Contents/X*
    
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents C:
-
-   TOC/Part_C.rst
+   :maxdepth: 1
+   :caption: Part A : URBAN
+   :numbered:
+   :glob:
+   
+   Contents/A*
+   
+.. toctree::
+   :maxdepth: 1
+   :caption: Part B : COMPLEXITY
+   :numbered:
+   :glob:
+   
+   Contents/B*
+   
+.. toctree::
+   :maxdepth: 1
+   :caption: Part C : COMPUTER
+   :numbered:
+   :glob:
+   
+   Contents/C*
+   
+.. toctree::
+   :maxdepth: 1
+   :caption: Part D : LITERATURE
+   :numbered:
+   :glob:
+   
+   Contents/D*

@@ -1,16 +1,22 @@
-# markdown suport
-recommonmark
-
-# markdown table suport
-sphinx-markdown-tables
-
-#emoji
-sphinxemoji
-
-# crate-docs-theme
-sphinx-rtd-theme
-cloud_sptheme
-
+## main 
 sphinx-autobuild
 sphinx
+
+## exts
+git+https://github.com/eli-collins/sphinxcontrib-fulltoc.git
+
+## theme
+# crate-docs-theme
+#sphinx-rtd-theme
+cloud_sptheme
 #insegel
+
+## markdown suport
+# recommonmark
+## markdown table suport
+# sphinx-markdown-tables
+
+## emoji
+sphinxemoji
+
+

@@ -1,9 +1,0 @@
-Chapter 2
-------------
-
-.. toctree::
-   :maxdepth: 3
-   :numbered:
-   :caption: Chapter 1
-
-   ../Contents/B*
