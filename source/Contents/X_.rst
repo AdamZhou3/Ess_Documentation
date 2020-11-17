@@ -73,7 +73,7 @@ Literature Review
 * Is all the literature relevant to your investigation?
 * How has your reading informed your methodology?
 * Demonstrates the importance of your investigation
-* Takes a critical perspective
+* Takes a critical perspective 
 * (Engaging narrative)
 * don't cite wikipedia
 
