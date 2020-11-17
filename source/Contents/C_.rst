@@ -14,6 +14,20 @@ Markdown
 demo
 ----
 
+Shell&Git
+=========
+
+.. code-block:: shell
+
+   conda activate doc
+   python _merge.py
+   cd ../1_Zen_Doc
+
+   git add .
+   time=$(date "+%Y-%m-%d %H:%M:%S") ###get current time
+   git commit -m "${time}"
+   git push
+
 Python
 ======
 
@@ -1501,6 +1515,3 @@ Classification Metrics (func)
 
 
    met = classification_scores(y_test, y_predict, y_prob); met
-
-Git
-===
