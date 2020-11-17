@@ -99,7 +99,6 @@ pygments_style = 'sphinx'
 # A list of ignored prefixes for module index sorting.
 modindex_common_prefix = [ "cloud_sptheme." ]
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'Zen'
