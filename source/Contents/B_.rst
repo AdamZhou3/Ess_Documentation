@@ -244,12 +244,7 @@ Simple Linear Regression Model
 Bayesian Methods
 ================
 
-http://mindhacks.cn/2008/09/21/the-magical-bayesian-method/
-
-https://docs.pymc.io/learn.html
-
-Chapter 1 The Philosophy of Bayesian Inference
-----------------------------------------------
+http://mindhacks.cn/2008/09/21/the-magical-bayesian-method/ 
 
 Bayesian inference differs from more traditional statistical inference by preserving *uncertainty*. 
 

@@ -904,6 +904,22 @@ Assignment 1
 Hypothesis Testing
 ------------------
 
+**1.**  State your hypotheses.
+
+**2.**  State your significance level: 𝛂
+
+**3.**  What is the evidence (E)? (The Test Statistic)
+
+**4.**  Calculate the probability of seeing evidence at least  as extreme as E, *if* H0 *is true*. (The “p-value”)
+
+**5.** If the p-value is smaller than the significance, reject  H0 and accept H1. Otherwise there is not enough  evidence to reject H0.
+
+
+.. image:: http://www.zzzhou.me/images/2020/11/17/image-20201117181037540.png
+   :target: http://www.zzzhou.me/images/2020/11/17/image-20201117181037540.png
+   :alt: image-20201117181037540
+
+
 Cluster Analysis
 ----------------
 

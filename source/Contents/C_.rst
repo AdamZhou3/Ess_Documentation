@@ -24,6 +24,27 @@ Gallery
 
 Ref : `AAA <https://blog.csdn.net/u013502146/article/details/103171825>`_
 
+快捷键
+^^^^^^
+
+`Doc <http://support.typora.io/Shortcut-Keys/##change-shortcut-keys>`_
+
+"Always on Top": "Ctrl+shift+t",
+"Paste as Plain Text": "Ctrl+V",
+"Paste":"Ctrl+Shift+V",
+
+"Task List": "Ctrl+T",
+"Link Reference": "Ctrl+L",
+"Insert Image":"Ctrl+M",
+"Code":"Ctrl+`",   
+
+切换："Shift + Tab"
+string B emphisize I underline U hyperlink K
+
+ctrl+shift + num
+
+Typewriter F9
+
 Shell&Git
 =========
 
@@ -40,6 +61,9 @@ Shell&Git
 
 Python
 ======
+
+Gallery
+-------
 
 .. code-block:: python
 
