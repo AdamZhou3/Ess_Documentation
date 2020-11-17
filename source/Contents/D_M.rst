@@ -47,6 +47,15 @@ Analyze
 
 Interpret
 
+Sentence
+^^^^^^^^
+
+The hardest part of purely computational approaches is the need to **anticipate** how maps will look according to variations in:
+
+Ultimately, what we are trying to get down to is 
+
+But throwing the kitchen sink at a problem doesn't actually help you either to develop you argument or to  communicate your findings.
+
 转接词
 ^^^^^^
 

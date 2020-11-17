@@ -14,6 +14,68 @@ Fabulous question Zhengzi! This is another limitation of this type of analysis, 
 
 There are really three types if scaling at least 1) inverse power laws that relate to size distributions like cities – Zipf –  2) scaling power laws that relate one variable to another – say income as a function of population – allometry – but there is a third – that we haven’t talked about today that is really important and central to spatial interaction – gravity transport models – the inverse square law that relates to what you are saying I think and we will look at this in urban simulation
 
+Geography Information Science
+=============================
+
+Spatial Patterns and Spatial Autocorrelation
+--------------------------------------------
+
+
+* The importance of pattern
+* Patterns of categorical point data – Point Pattern Analysis
+
+  * Quadrat Analysis
+  * Ripley's K
+  * DBSCAN
+
+* Patterns of spatially referenced continuous observations
+
+  * Spatial autocorrelation
+  * Defining near and distant things
+  * Measuring spatial autocorrelation
+
+    * Moran's I
+    * LISA
+
+The importance of pattern
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Discrete Objects: Point Pattern Analysis
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+*John Snow* : Broad street pump
+
+Quadrat Analysis
+~~~~~~~~~~~~~~~~
+
+Ripley's K
+~~~~~~~~~~
+
+DBSCAN
+~~~~~~
+
+`Landscapetoolbox <https://wiki.landscapetoolbox.org/doku.php/spatial_analysis_methods:home>`_
+
+Continuous Objects:
+^^^^^^^^^^^^^^^^^^^
+
+Spatial autocorrelation
+~~~~~~~~~~~~~~~~~~~~~~~
+
+`GeoDa <https://geodacenter.github.io/documentation.html>`_
+
+Defining near and distant things
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Measuring spatial autocorrelation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Moran's I
+"""""""""
+
+LISA
+""""
+
 Quantitative Methods
 ====================
 
@@ -937,6 +999,38 @@ Quiz
 Cluster Analysis
 ----------------
 
+Part 1: Hypothesis testing recap
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Yes, the first question is whether your INDEPENDENT variable is categorical or quantitative. The second is whether your DEPENDENT variable categorical or quantitative.
+
+0.01 0.05 p value 
+
+Part 2: Cluster analysis – why should I care?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Sorry, I am always get confused about the difference among Boxcox transformation, log transformation, z-scores and  standardisation, it seems that all of these are transforming things on the same scale, how to choose the proper method?
+
+Sorry, I am always confused about the difference between Boxcox transformation, log transformation, z-scores, and standardization. It seems that all of these are transforming things on the same scale. How to choose the proper method?
+
+Will the converted data lose some features
+
+Part 3: Before you start
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+如何比较谁更异常？
+
+标准化不会损失特征
+
+Part 5: Hierarchical clustering
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Part 6: How good are your clusters?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Part 7: Some tips and tricks for your written work
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Optimising Limited Resources
 ----------------------------
 
@@ -954,3 +1048,212 @@ wk4
 
 Introduction to Programming
 ===========================
+
+Week 6：Spatial Data
+--------------------
+
+Lectures
+^^^^^^^^
+
+Mapping
+~~~~~~~
+
+
+* Purely Computational vs. Mostly Computational
+
+  * Wider variety of output formats (e.g. Atlases, 3D/web).
+  * Better support for 'finishing touches' (e.g. scalebars, north arrows, rule-based labels, etc.).
+  * Better-quality output for less effort (e.g. Model Builder + QGIS styles).
+
+* 
+  Every Building in America
+
+
+  * `Building footprints <https://github.com/Microsoft/USBuildingFootprints/>`_ collected by Microsoft, but presentation by New York Times `highlights society-nature interactions <https://www.nytimes.com/interactive/2018/10/12/us/map-of-every-building-in-the-united-states.html>`_.
+  * 
+    .. image:: http://www.zzzhou.me/images/2020/11/17/NYT-MS-History.png
+       :target: http://www.zzzhou.me/images/2020/11/17/NYT-MS-History.png
+       :alt: NYT-MS-History
+
+* 
+  A Deceptively Simple Problem
+
+..
+
+      We want to show data on a map in a way that is **both accurate and informative**.
+
+
+
+* Classification
+
+  * The greater the accuracy of a **choropleth** or other class-based map, the less it’s possible generalise from it.
+  * There is no 'right' way to group data into an arbitrary number of discrete classes (a.k.a. to generalise).
+
+* Different ways of representation will be totally different
+
+  * Judgement should based on distribution
+  * Six Views of Employment
+
+..
+
+   ..
+
+      Different colour and break schemes not only give us different **views** of the data, they give us different **understandings** of the data! Each potentially changes how the data looks and, consequently, how we perceive the distribution.
+
+
+
+* Maps have a 'Rhetoric' `Do maps lie? <https://www.youtube.com/watch?v=G0_MBrJnRq0>`_ it always helps to look at a map with a critical  eye.
+
+Exploratory Data Analysis
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* Epicyclic Feedback
+
+.. list-table::
+   :header-rows: 1
+
+   * - 
+     - Set Expectations
+     - Collect Information
+     - Revise Expectations
+   * - Question
+     - Question is of interest to audience
+     - Literature search/experts
+     - Sharpen question
+   * - EDA
+     - Data are appropriate for question
+     - Make exploratory plots
+     - Refine question or collect more data
+   * - Modelling
+     - Primary model answers question
+     - Fit secondary models / analysis
+     - Revise model to include more predictors
+   * - Interpretation
+     - Interpretation provides specific and meaningful answer
+     - Interpret analyses with focus on effect and uncertainty
+     - Revise EDA and/or models to provide more specific answers
+   * - Communication
+     - Process & results are complete and meaningful
+     - **Seek feedback**
+     - Revises anlyses or approach to presentation
+
+
+
+* 
+  Approaching EDA
+
+
+  * From: `EDA—Don't ask how, ask what <https://medium.com/towards-artificial-intelligence/exploratory-data-analysis-eda-dont-ask-how-ask-what-2e29703fb24a>`_\ :
+  * Descriptive Statistics: get a high-level understanding of your dataset
+  * Missing values: come to terms with how bad your dataset is
+  * Distributions and Outliers: and why countries that insist on using different units make our jobs so much harder
+  * Correlations: and why sometimes even the most obvious patterns still require some investigating
+
+    * Preview data
+    * Check total number of entries and column types
+    * Check any null values
+    * Check duplicate entries
+    * Plot distribution of numeric data (univariate and pairwise joint distribution)
+    * Plot count distribution of categorical data
+    * Analyse time series of numeric data by daily, monthly and yearly frequencies
+
+* 
+  Signal & Noise  
+
+
+  * Starting at a chart 
+
+    * The problem of relying on statistics alone was amply illustrated by Anscombe's Quartet (1973)...
+    * We *are not* very good at looking at spreadsheets. 
+    * We *are* very good at spotting patterns visually.
+    * ^ Or, as Albert Einstein reportedly said: "If I can't picture it, I can't understand it."
+
+  * What Makes a Good Plot?
+
+    * Serves a **purpose** — it is clear how it advances the argument in a way that could not be done in the text *alone*.
+    * Contains only what is **relevant** — zeroes in on what the reader *needs* and is not needlessly cluttered.
+    * Uses precision that is **meaningful** — 
+    * Far too many charts or tables could be easily written up in a single sentence.
+    * Far too many charts or tables contain redundancy, clutter, and 'flair'.\
+    * Don't report average height of your class to sub-millimeter level accuracy, or lat/long to sub-atomic scale.
+
+  * The Purpose of a Chart
+
+    * Think of a chart or table as part of your ‘argument’ – if you can’t tell me how a figure advances your argument (or if your explanation is more concise than the figure) then you probably don’t need it.
+    * Identify & prioritise the relationships in the data.
+    * Choose a chart type/chart symbology that gives emphasis to the most important relationships.
+
+  * Beyond the Chart
+  * Why a table is sometimes better than a chart:
+
+    * You need to present data values with greater detail
+    * You need to enable readers to draw comparisons between data values
+    * You need to present the same data in multiple ways (\ *e.g.* raw number *and* percentage)
+    * You want to show many dimensions for a small number of observations
+    * 表格的格式  数字对齐方式 信息不重复 不遗漏
+
+Links
+
+
+* `Pandas Reference <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.plot.html>`_
+* `A Guide to EDA in Python <https://levelup.gitconnected.com/cozy-up-with-your-data-6aedfb651172>`_ (Looks very promising)
+* `EDA with Pandas on Kaggle <https://www.kaggle.com/kashnitsky/topic-1-exploratory-data-analysis-with-pandas>`_
+* `EDA Visualisation using Pandas <https://towardsdatascience.com/exploratory-data-analysis-eda-visualization-using-pandas-ca5a04271607>`_
+* `Python EDA Analysis Tutorial <https://www.datacamp.com/community/tutorials/exploratory-data-analysis-python>`_
+* `Better EDA with Pandas Profiling <https://towardsdatascience.com/a-better-eda-with-pandas-profiling-e842a00e1136>`_ **[Requires module installation]**
+* `EDA: DataPrep.eda vs Pandas-Profiling <https://towardsdatascience.com/exploratory-data-analysis-dataprep-eda-vs-pandas-profiling-7137683fe47f>`_ **[Requires module installation]**
+* `A Data Science Project for Beginners (EDA) <https://medium.com/analytics-vidhya/a-data-science-project-for-beginners-exploratory-data-analysis-eda-d334f58f94ee>`_
+* `EDA: A Pracitcal Guide and Template for Structured Data <https://towardsdatascience.com/exploratory-data-analysis-eda-a-practical-guide-and-template-for-structured-data-abfbf3ee3bd9>`_
+* `EDA—Don't ask how, ask what <https://medium.com/towards-artificial-intelligence/exploratory-data-analysis-eda-dont-ask-how-ask-what-2e29703fb24a>`_ (Part 1)
+* `Preparing your Dataset for Modeling – Quickly and Easily <https://medium.com/towards-artificial-intelligence/preparing-your-dataset-for-modeling-quickly-and-easily-c8c1b89fdb2e>`_ (Part 2)
+* `Handling Missing Data <https://towardsdatascience.com/handling-missing-data-for-a-beginner-6d6f5ea53436>`_
+* `Introduction to Exploratory Data Analysis (EDA) <https://medium.com/code-heroku/introduction-to-exploratory-data-analysis-eda-c0257f888676>`_
+
+Exploratory Spatial Data Analysis
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+* PySAL
+
+{{Mind-Map}}
+PySAL
+    libpysal
+        weights
+            Distance Weights
+            Continguity Weights
+    explore
+        esda
+        inequality
+        pointpats
+        ...
+    model
+        mgwr
+        spglm
+        spreg
+        ...
+    viz
+        legendgram
+        mapclassify
+        splot
+
+
+* `EDA with Pandas on Kaggle <https://www.kaggle.com/kashnitsky/topic-1-exploratory-data-analysis-with-pandas>`_
+* `EDA Visualisation using Pandas <https://towardsdatascience.com/exploratory-data-analysis-eda-visualization-using-pandas-ca5a04271607>`_
+* `Python EDA Analysis Tutorial <https://www.datacamp.com/community/tutorials/exploratory-data-analysis-python>`_
+* `Better EDA with Pandas Profiling <https://towardsdatascience.com/a-better-eda-with-pandas-profiling-e842a00e1136>`_ **[Requires module installation]**
+* `Visualising Missing Data <https://geopandas.org/mapping.html##missing-data>`_
+* `Choosing Map Colours <https://geopandas.org/mapping.html##choosing-colors>`_
+
+Readings
+^^^^^^^^
+
+Dignazio 2020
+~~~~~~~~~~~~~
+
+[@dignazio:2020, chap. 6] **The Numbers Don't Speak for Themselves** in *Data Feminism*\ ; `Pre-review URL <https://bookbook.pubpub.org/pub/6ui5n4vo>`_
+
+Elwood 2017
+~~~~~~~~~~~
+
+[@Elwood:2017] `DOI <https://doi.org/10.1080/13658816.2017.1334892>`_

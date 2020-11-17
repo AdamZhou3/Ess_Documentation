@@ -1549,3 +1549,243 @@ Classification Metrics (func)
 
 
    met = classification_scores(y_test, y_predict, y_prob); met
+
+GeoPandas
+=========
+
+Intro
+-----
+
+GeoPandas vs PySAL
+
+
+* 'Geospatial Pandas' provides a set of tools for working with *geo-data* in a pandas-like way. 
+* The Python Spatial Analysis Library provides an array of tools for performing spatial *analysis*. Now uses geo-pandas as default data structure. 
+
+Basic
+-----
+
+Read & write
+^^^^^^^^^^^^
+
+.. code-block:: python
+
+   import geopandas as gpd
+   ### read
+   gpkg_src = 'https://bit.ly/2K4JcsB'
+   world = gpd.read_file(gpkg_src)
+   world.plot(facecolor='white', edgecolor='darkblue')
+
+   ### write
+   world.to_file('world.gpkg', driver='GPKG')
+   world.to_file('world.shp') ## driver='ESRI Shapefile'
+   world.to_file('world.geojson', driver='GeoJSON')
+
+
+* `GeoDataFrame <https://geopandas.org/data_structures.html##geodataframe>`_
+* `GeoSeries <https://geopandas.org/data_structures.html##geoseries>`_
+
+In principle, a GeoSeries can contain multiple geo-data types, but in practice you'll want to be one of the following ``shapely`` classes:
+
+
+#. Points / Multi-Points
+#. Lines / Multi-Lines
+#. Polygons / Multi-Polygons
+
+.. code-block:: python
+
+   print(isinstance(world, str))
+   print(isinstance(world, gpd.GeoDataFrame))
+   print(isinstance(world, pd.DataFrame))
+
+Projections
+^^^^^^^^^^^
+
+.. code-block:: python
+
+   print(world.crs)
+   ### https://epsg.io
+
+   ### reproject 
+   ### For data sets  _without_ projection information (i.e. anything loaded from a shapefile) you must `gdf.set_crs(<spec>)`. For all others you should `gdf.to_crs(<spec>)`.
+   world2 = world.to_crs('ESRI:54030')
+   world2.plot()
+
+
+* `EPSG\:4326 <http://epsg.io/4326>`_ for the World Geodetic System 84 used in GPS.
+* `EPSG\:27700 <http://epsg.io/27700>`_ for OSGB 1936/British National Grid used in the UK.
+
+Spatial Index
+^^^^^^^^^^^^^
+
+.. code-block:: python
+
+   wslice = world.cx[-50:50, -20:20]
+   ax = wslice.plot()
+
+A GeoSeries has attributes like any other Series, but also includes some spatially-specifc ones:
+
+
+* ``area`` — if a polygon
+* ``bounds`` — for each feature
+* ``total_bounds`` — for each GeoSeries
+* ``geom_type`` — if you don't already know
+* ``is_valid`` — if you need to test
+
+Additional GeoSeries methods icnlude:
+
+
+* ``distance()`` — returns ``Series`` measuring distances to some *other* feature (called as: ``<GeoSeries>.distance(<feature>)``\ )
+* ``centroid`` — returns ``GeoSeries`` of **strict** centroids (called as: ``<GeoSeries>.centroid``\ )
+* ``representative_point()`` — returns ``GeoSeries`` of points **within** features
+* ``to_crs()`` and ``plot()``\ , which you've already seen.
+
+^ Note that centroid is *not* called with parentheses. Technically it's more like an attribute than a method.
+
+Simple geographical tests:
+
+
+* ``geom_almost_equals()`` — tries to deal with rounding issues when comparing two features.
+* ``contains()`` — is shape contained within some *other* features.
+* ``intersects()`` — does shape intersect some *other* features.
+
+Point Data
+^^^^^^^^^^
+
+.. code-block:: python
+
+   url = 'https://bit.ly/3owocdI'
+   df  = pd.read_csv(url)
+
+   gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df['longitude'],                                                       df['latitude'],crs='epsg:4326'))
+   gdf.plot()
+
+   ## Converting Non-Spatial Data 2
+
+   bbox = 'POLYGON((5000000.0 2500000.0, 5000000.0 -2500000.0, -5000000.0 -2500000.0, -5000000.0 2500000.0, 5000000.0 2500000.0))'
+
+   from shapely import wkt
+   bgdf = gpd.GeoDataFrame({'id':[0], 'coordinates':bbox})
+   bgdf['geometry'] = bgdf.coordinates.apply(wkt.loads)
+   bgdf = bgdf.set_crs('ESRI:54030')
+
+   ## From Text to Bounding Box
+   scale = int(float('1e7'))
+   f,ax=plt.subplots(figsize=(8,4))
+   world2.plot(ax=ax)
+   bgdf.plot(ax=ax, color='none', edgecolor='r')
+   ax.set_xlim([-0.75*scale, +0.75*scale])
+   ax.set_ylim([-3*scale/10, +3*scale/10])
+
+`Well-Known Text <https://www.vertica.com/docs/9.2.x/HTML/Content/Authoring/AnalyzingData/Geospatial/Spatial_Definitions/WellknownTextWKT.htm>`_ (WKT), `GeoJSON <https://geojson.org/>`_
+
+
+* `GeoPandas on ReadTheDocs <https://geopandas.readthedocs.io/en/latest/docs.html>`_
+
+.. code-block:: python
+
+   ## plot     
+   gdf = gpd.GeoDataFrame(df, 
+         geometry=gpd.points_from_xy(df['longitude'], df['latitude'], crs='epsg:4326'))
+   gdf.plot(column='price', cmap='viridis', scheme='quantiles', markersize=8, legend=True)
+
+Spatial plot
+^^^^^^^^^^^^
+
+.. code-block:: python
+
+   ### Getting spatial
+   import geopandas as gpd
+   url = 'https://bit.ly/3neINBV'
+   boros = gpd.read_file(url, driver='GPKG')
+   boros.plot(color='none',edgecolor='red')
+
+   ### Convex Hull
+   boros['hulls'] = boros.geometry.convex_hull
+   boros = boros.set_geometry('hulls')
+   boros.plot(ax=ax, column='NAME', categorical=True, alpha=0.5)
+
+   ### Dissolve
+   boros['region'] = 'London'
+   ldn = boros.dissolve(by='region')
+   f,ax = plt.subplots(figsize=(10,8))
+   ldn.plot(ax=ax)
+   gdf.plot(ax=ax, column='price', scheme='HeadTailBreaks', cmap='inferno')
+
+   ### Simplify
+   ldn.simplify(250).plot()
+
+   ### Buffer
+   ldn.buffer(500).plot()
+
+   ### Buffer & Simplify
+   ldn.buffer(1000).simplify(1000).plot()
+
+   ### difference
+   dn.buffer(3000).simplify(2500).difference(ldn.geometry).plot()
+
+   ### Legendgrams
+
+   ### Implementing Legendgrams
+   import pysal as ps
+   ## https://github.com/pysal/mapclassify
+   import mapclassify as mc
+   ## https://jiffyclub.github.io/palettable/
+   import palettable.matplotlib as palmpl
+   from legendgram import legendgram
+
+   f,ax = plt.subplots(figsize=(10,8))
+   gdf.plot(column='price', scheme='Quantiles', cmap='magma', k=5, ax=ax)
+   q = mc.Quantiles(gdf.price.values, k=5)
+
+   ## https://github.com/pysal/legendgram/blob/master/legendgram/legendgram.py
+   legendgram(f, ax, 
+                  gdf.price, q.bins, pal=palmpl.Magma_5,
+                  legend_size=(.4,.2), ## legend size in fractions of the axis
+                  loc = 'upper left', ## mpl-style legend loc
+                  clip = (0,500), ## clip range of the histogram
+                  frameon=True)
+
+KNN Weights
+^^^^^^^^^^^
+
+
+.. image:: http://www.zzzhou.me/images/2020/11/17/Airbnb_KNN.png
+   :target: http://www.zzzhou.me/images/2020/11/17/Airbnb_KNN.png
+   :alt: Airbnb_KNN
+
+
+.. code-block:: python
+
+   from pysal.lib import weights
+   w = weights.KNN.from_dataframe(gdf, k=3)
+   gdf['w_price'] = weights.lag_spatial(w, gdf.price)
+   gdf[['name','price','w_price']].sample(5, random_state=42)
+
+   w2 = weights.DistanceBand.from_dataframe(gdf, threshold=2000, alpha=-0.25)
+   gdf['price_std'] = (gdf.price - gdf.price.mean()) / gdf.price.std()
+   gdf['w_price_std'] = weights.lag_spatial(w2, gdf.price_std)
+   gdf[['name','price_std','w_price_std']].sample(5, random_state=42)
+
+   ### Moran's I
+   mi = esda.Moran(gdf['price'], w)
+   print(f"{mi.I:0.4f}")
+   print(f"{mi.p_sim:0.4f}")
+   moran_scatterplot(mi)
+
+   ### Local Moran's I
+   lisa = esda.Moran_Local(gdf.price, w)
+   ## Break observations into significant or not
+   gdf['sig'] = lisa.p_sim < 0.05
+   ## Store the quadrant they belong to
+   gdf['quad'] = lisa.q
+   gdf[['name','price','sig','quad']].sample(5, random_state=42)
+
+   ### plot lisa
+   plot_local_autocorrelation(lisa, gdf, 'price')
+
+
+.. image:: http://www.zzzhou.me/images/2020/11/17/LISA.png
+   :target: http://www.zzzhou.me/images/2020/11/17/LISA.png
+   :alt: LISA
+
