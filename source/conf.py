@@ -61,7 +61,7 @@ autosectionlabel_prefix_document = True
 
 ## -- config ---------------------------------------------------------------------
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['../_templates']
+templates_path = ['./_templates']
 
 # The suffix of source filenames.
 source_suffix = '.rst' 
@@ -165,7 +165,7 @@ html_title = "%s v%s" % (project, release)
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = os.path.join("../_static", "logo.PNG")
+html_logo = os.path.join("./_static", "logo.PNG")
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
@@ -175,7 +175,7 @@ html_logo = os.path.join("../_static", "logo.PNG")
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['../_static']
+html_static_path = ['./_static']
 html_js_files = [
     'js/baidutongji.js', 
 ]
