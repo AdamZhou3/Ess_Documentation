@@ -1049,6 +1049,24 @@ wk4
 Introduction to Programming
 ===========================
 
+Reading week
+------------
+
+In addition to looking for relevant content in [@dignazio:2020] (\ `URL <https://bookbook.pubpub.org/data-feminism>`_\ ), you will also want to check consider:
+
+Dignazio:2020
+^^^^^^^^^^^^^
+
+Elwood:2017
+^^^^^^^^^^^
+
+
+* [@Elwood:2017] `DOI <https://doi.org/10.1080/13658816.2017.1334892>`_
+* [@Elwood:2018] `DOI <https://doi.org/10.1080/0966369X.2018.1465396>`_
+* [@Bemt:2018] `DOI <https://doi.org/10.1080/03098265.2018.1436534>`_
+* [@Amoore:2019] `DOI <https://doi.org/10.1177%2F0263276419851846>`_
+* [@Crawford:2015] `DOI <https://doi.org/10.1007/s10708-014-9597-z>`_
+
 Week 6：Spatial Data
 --------------------
 
@@ -1257,3 +1275,11 @@ Elwood 2017
 ~~~~~~~~~~~
 
 [@Elwood:2017] `DOI <https://doi.org/10.1080/13658816.2017.1334892>`_
+
+Practical
+^^^^^^^^^
+
+
+* ``isna`` and ``isnull``  : 完全相同
+* ``pdf[pdf.id.isna()].index.values`` ： 查找空值
+* ``pdf.longitude`` and ``pdf["longitude"]`` ：似乎也没差别

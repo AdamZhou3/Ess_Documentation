@@ -45,6 +45,17 @@ ctrl+shift + num
 
 Typewriter F9
 
+Jupyter
+-------
+
+.. code-block::
+
+   <div style="border: dotted 1px rgb(156,121,26); padding: 10px; margin: 5px; background-color: rgb(255,236,184)">  
+   <i></i>
+    </div>
+
+https://xmuchong.com/1065411/
+
 Shell&Git
 =========
 
