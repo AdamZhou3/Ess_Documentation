@@ -1060,12 +1060,21 @@ Dignazio:2020
 Elwood:2017
 ^^^^^^^^^^^
 
+Elwood:2018
+^^^^^^^^^^^
+
+Crawford : 2015 `DOI <https://doi.org/10.1007/s10708-014-9597-z>`_
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+* ontological, epistemological, and ethical challenges that arise when social media datasets are used to understand crisis events
+* 
+
 
 * [@Elwood:2017] `DOI <https://doi.org/10.1080/13658816.2017.1334892>`_
 * [@Elwood:2018] `DOI <https://doi.org/10.1080/0966369X.2018.1465396>`_
 * [@Bemt:2018] `DOI <https://doi.org/10.1080/03098265.2018.1436534>`_
 * [@Amoore:2019] `DOI <https://doi.org/10.1177%2F0263276419851846>`_
-* [@Crawford:2015] `DOI <https://doi.org/10.1007/s10708-014-9597-z>`_
 
 Week 6：Spatial Data
 --------------------
@@ -1283,3 +1292,874 @@ Practical
 * ``isna`` and ``isnull``  : 完全相同
 * ``pdf[pdf.id.isna()].index.values`` ： 查找空值
 * ``pdf.longitude`` and ``pdf["longitude"]`` ：似乎也没差别
+
+Assessment ##2
+--------------
+
+..
+
+   I had interpreted it as doing the biography on just the August listing dataset we were given and then in the questions like ‘to what extent is the data complete’ I analysed whether this dataset in isolation was a complete picture of the process it claims for us to examine and whether integration of the other datasets would be more beneficial (i.e. time-series analysis for airbnb impact etc)
+
+
+
+* The focus here is really on approaching the ‘assigned’ data with a critical eye—what are the strengths and weaknesses, what are the ethics, etc. Link it to the readings. While it is not necessary to have run any code/done any analysis, it will undoubtedly be easier for many of you to ground your thinking in concrete examples drawn from the data. Bringing other data sets from the InsideAirbnb site into it may help but might just confuse.
+* It is not necessary that you perform any new work in Python for Assessment 2. If you are having trouble making *sense* of the data and feel that it would help to think more 'concretely' then you might want to revisit the summary information and plots that we did for one or more of the columns we’ve not looked at... but that is *only* if you think it will help you to answer the questions in greater detail and with more specificity. I am not asking for you to do anything more with the code than you have already done. You will not get a better mark for having written more/new code.
+* The readings have invited you to think about how data is generated, for what purpose(s), who is included/excluded, what is missing, etc., as well as issues of ethics (such as the ethical use of data), and these questions and topics are intended to support a critical engagement with the data. I would start by reading up on how the data was collected and for what purpose, and then use that as a launching point for the rest of the assessment.
+* It is not necessary that you look at the other data available on the InsideAirbnb web site but, again, if it helps you think through the issues in greater detail then you are free to reference them in your answer. You will not get a better mark for discussing other data sets in detail.
+* Please use the template to answer the questions, you don't need to write an intro/conclusion/etc. By the time you've finished filling in the Markdown template you'll have something fairly well-organised that can, hopefully, be read as a kind of highly-structured essay.
+
+Week 7 : Textual Data
+---------------------
+
+Lectures
+^^^^^^^^
+
+Notebook as Documents
+~~~~~~~~~~~~~~~~~~~~~
+
+Patterns in Text
+~~~~~~~~~~~~~~~~
+
+正则能匹配中文吗
+
+正则的局限性
+
+.. code-block:: python
+
+   >>> '123foo456'.index('foo')
+   2
+   >>> '123foo456'.split('foo')
+   ['123', '456']
+   >>> ' 123 foo 456 '.strip() ### 移除首位空格
+   '123 foo 456'
+   >>> 'HOW NOW BROWN COW?'.lower()
+   'how now brown cow?'
+   >>> 'How now brown cow?'.replace('brown ','green-')
+   'How now green-cow?'
+
+Handling text
+"""""""""""""
+
+Regexes are a way for talking *about* patterns observed in text, although their origins are rooted in philosophy and linguistics.
+
+Implemented in Python as:
+
+.. code-block:: python
+
+   import re
+   ## re.search(<regex>, <str>)
+   s = '123foo456'
+   if re.search('123',s):
+       print("Found a match.")
+   else:
+       print("No match.")
+
+Prints ``'Found a match.'``
+
+Capturing Matches
+#################
+
+.. code-block:: python
+
+   m = re.search('123',s)
+   print(m.start()) ## 0
+   print(m.end())## 3
+   print(m.span())## (0,3)
+   print(m.group())## 123
+
+^ So, we have ``None`` if a search fails, but if it succeeds then we have attributes of the ``match`` objection like start, end, span, and group (this last is going to be particularly interesting since it tells us what matched).
+
+Configuring Matches
+###################
+
+.. code-block:: python
+
+   m = re.search('FOO',s)
+   print(m) ## None
+   m = re.search('FOO',s,re.IGNORECASE)
+   print(m) ## <re.Match object; span=(3, 6), match='foo'>
+
+The third parameter allows us to: match newlines (\ ``re.DOTALL``\ ), ignore case (\ ``re.IGNORECASE``\ ), take language into account (\ ``re.LOCALE``\ ), match across lines (\ ``re.MULTILINE``\ ), and write patterns across multiple lines (\ ``re.VERBOSE``\ ). If you need multiple options it's ``re.DOTALL | re.IGNORECASE``. Bitwise again!
+
+More Than One Match
+###################
+
+.. code-block:: python
+
+   s = '123foo456foo789'
+   lst = re.findall('foo',s)
+   print(lst) ## ['foo','foo']
+   lst = re.finditer('foo',s)
+   [x for x in lst] ## ## [<re.Match object; span=(3, 6), match='foo'>, <re.Match object; span=(9, 12), match='foo'>]
+   rs  = re.sub('foo',' ',s)
+   print(rs)  ## '123 456 789'
+   rs  = re.split(' ',rs)
+   print(rs) ## ['123', '456', '789']
+
+Regular Expression
+""""""""""""""""""
+
+.. code-block:: python
+
+   >>> import re
+   >>> m = re.search('\$((\d+,){2,}\d+)',
+           "'That will be $1,000,000 he said...'")
+   >>> m.group(1)
+   '1,000,000'
+
+This is not even scratching the surface, but it allows to look for sequences of 1-or-more digits followed by a comma... and for those sequence to repeat two or more times, ending with a sequence of digits. The rest is ignored.
+
+Character Classes
+#################
+
+.. list-table::
+   :header-rows: 1
+
+   * - Characters
+     - Regex Meta Class Options
+     - 'Antonyms'
+   * - a...z
+     - ``[a-z]``\ , ``\w`` (word-like characters)
+     - ``[^a-z]``\ , ``\W``
+   * - A...Z
+     - ``[A-Z]``\ , ``\w`` (word-like characters)
+     - ``[^A-Z]``\ , ``\W``
+   * - 0...9
+     - ``[0-9]``\ , ``\d`` (digits)
+     - ``[^0-9]``\ , ``\D``
+   * - ``' '``\ , ``\n``\ , ``\t``\ , ``\r``\ , ``\f``\ , ``\v``
+     - ``\s``
+     - ``\S``
+   * - ``.``\ , ``[``\ , ``]``\ , ``+``\ , ``$``\ , ``^``\ , ``|``\ , ``{``\ , ``}``\ , ``*``\ , ``(``\ , ``)``\ , ``?``
+     - For safety always precede character with a ``\``.
+     - None
+
+
+*Note:*  ``\w`` will include ``_``. And ``\`` is, once again, important as it 'escapes' various characters, and options.
+
+Options
+#######
+
+.. list-table::
+   :header-rows: 1
+
+   * - Options
+     - Regex Meta Class Options
+   * - **i**
+     - 不区分大小写匹配, 它把字母 A 到 Z 视为等同于它们的小写副本.
+   * - **m**
+     - 多行. 把\ *Haystack*\ 视为许多单独的行（如果它包含新行符）的集合而不是一个单个的连续行。具体地, 它会改变下列方式:1) 抑扬符 (^) 能匹配紧跟在内部所有新行符之后的位置, 如同它总能匹配 *Haystack* 的开始处一样 (但它不会匹配 *Haystack* 的 *最后面* 的新行符之后的位置).2) 美元符 ($) 能匹配 *Haystack* 中任何新行符之前的位置 (如同它总能匹配最后面的位置).例如，模式“m)^abc$”中包含了“m”选项才能在 *Haystack*\ “xyz\ ``r``\ nabc”中形成匹配。使用了 "m" 选项时 "D" 选项会被忽略.
+   * - **s**
+     - DotAll. 此选项会让句点 (.) 匹配包含新行符在内的所有字符 (一般情况下, 它不能匹配新行符). 然而, 如果换行符是默认的 CRLF (\ ``r``\ n), 则必须使用两个句点才能进行匹配 (不是一个). 不论是否使用此选项, 排除型字符类 (例如 [^a]) 总能匹配新行符.
+   * - **x**
+     - 忽略模式中的空白字符, 除非对它们进行转义或出现在字符类中. 字符 ``n 和``\ t 在它们达到 PCRE 时会被忽略, 因为它们已经是原始的/原义的空白字符 (与之相比, \n 和 \t 则不会被忽略, 因为它们是 PCRE 的转义序列). **x** 选项还会忽略字符类外面的非转义 ## 和下一个新行符之间的字符 (包括它们). 这使得在复杂的模式中添加注释成为可能. 然而, 这只适用于数据字符; 空白字符可能永远都不会出现在特殊字符序列中, 例如 (?(, 它以条件子模式开头.
+   * - **A**
+     - 强制固定匹配模式; 即它只能匹配 *Haystack* 的开始处 (即使开始处是换行符, 也会从换行符开始匹配而不从换行符之后的字符开始). 在大多数条件下, 它的作用等同于在模式中使用 "^".
+   * - **D**
+     - 强制美元符 ($) 匹配 *Haystack* 的末端, 即使 *Haystack* 的最后的字符是新行符. 如果没有此选项，则$会匹配最后的新行符之前的位置（如果有新行符，此时匹配不会包括新行符）。注: 使用了 "m" 选项时此选项会被忽略.
+   * - **J**
+     - 允许重复 `命名子模式 <https://ahkcn.github.io/docs/commands/RegExMatch.htm##NamedSubPat>`_. 它可用于在一组相同的命名子模式中只有其中一个形成匹配的模式. 注: 如果有多个特殊名子模式的实例形成匹配, 那么只保存最左边的那个. 此外, 变量名不区分大小写.
+   * - **U**
+     - 非贪婪. 让限定符 *+?{} 在形成匹配时只消耗必需的那些字符, 把剩下的部分留给模式的后面部分. 没有使用 "U" 选项时, 可以在这些字符后加上问号来限定它们为非贪婪的. 相反地, *\ 使用了* "U" 选项时, 问号会成为贪婪匹配的限定符.
+   * - **X**
+     - PCRE_EXTRA. 启用不兼容 Perl 的 PCRE 功能. 目前, 这样的唯一功能是在模式中的任意反斜线后跟着没有特殊含义的字母时会导致匹配失败并因此设置 ErrorLevel. 此选项会帮助保留未使用的反斜线序列供将来使用. 如果没有此选项, 反斜线后跟着没有特殊含义的字母时会被视为原义的 (即 \g 和 g 都被识别为原义的 g). 不论是否使用此选项, 没有特殊含义的非字母反斜线序列总是被视为原义的 (即 \/ 和 / 都被视为正斜杠).
+   * - **P**
+     - 位置模式. 这会使 RegExMatch() 产生匹配和其子模式的位置和长度而不是匹配它们的子字符串. 更多细节请参阅 `UnquotedOutputVar <https://ahkcn.github.io/docs/commands/RegExMatch.htm##PosMode>`_\ 。
+   * - **S**
+     - 研究模式来提高性能. 它可用于要执行多次的特殊模式 (尤其是复杂的模式). 如果 PCRE 找到了提高性能的方法, 则会把这个发现储存到缓存中模式的旁边, 以便在之后执行相同模式时使用 (后续使用此模式时还需要指定 S 选项, 因为要找到缓存中相同的模式则它们的选项也必须完全相同, 包括它们的顺序). (这里的研究主要指在进行匹配前使用其他一些通常较简单快速的方法进行判断, 例如假设模式至少匹配 5 个字符, 而源字符串只有 3 个, 那么正则表达式引擎会直接返回 "没有匹配" 的结果, 而不会进行匹配.)
+   * - **C**
+     - 启用自动调出模式。请参阅\ `正则表达式调出 <https://ahkcn.github.io/docs/misc/RegExCallout.htm##auto>`_\ 了解更多信息。
+   * - **`n**
+     - 从默认的新行符 (\ ``r``\ n) 切换到单独的换行符 (`n), 这是 UNIX 系统的标准. 所选择的新行符会影响 `锚 (^ 和 $) <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##anchor>`_ 和 `含句点的模式 <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##dot>`_.
+   * - **`r**
+     - 从默认的新行符 (\ ``r``\ n) 切换到单独的回车符 (`r).
+   * - **`a**
+     - 在 v1.0.46.06+, ``a 可以识别任意类型的新行符, 即``\ r, ``n,``\ r\ ``n,``\ v/VT/vertical tab/chr(0xB), ``f/FF/formfeed/chr(0xC) 以及 NEL/next-line/chr(0x85). 在 v1.0.47.05+，新行符可以被限制为 CR、LF 和 CRLF 三种，只需要在模式的开始处（选项后面）指定大写的（*ANYCRLF）；例如``\ im)(*ANYCRLF)^abc$`。
+
+
+Metacharacters
+##############
+
+.. list-table::
+   :header-rows: 1
+
+   * - Metacharacter
+     - Meaning
+   * - .
+     - Any character at all
+   * - ^
+     - Start of a string/line
+   * - $
+     - End of a string/line
+   * - *
+     - 0 or more of something
+   * - +
+     - 1 or more of something
+   * - ?
+     - 0 or 1 of something; also lazy modifier
+   * - {m,n}
+     - Between m and n of something
+   * - [ ]
+     - A set of character literals
+   * - ( )
+     - Group/remember this sequence of characters
+   * - |
+     - Or
+
+
+.. list-table::
+   :header-rows: 1
+
+   * - Metacharacter
+     - Meaning
+   * - **.**
+     - 默认情况下, 句点匹配除新行符 (\ ``r``\ n) 序列外的任何单个字符, 但是这种特性可以使用 `DotAll (s) <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##opt_s>`_\ , `新行 (`n) <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##opt_esc_n>`_\ , `回车 (`r) <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##opt_esc_r>`_\ , ``a 或 (*ANYCRLF) <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##NEWLINE_ANY>`_ 选项进行改变. 例如, **ab.** 可以匹配 abc 和 abz 以及 ab_.
+   * - *****
+     - 星号匹配零个或多个前面的字符, `字符类 <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##class>`_ 或 `子模式 <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##subpat>`_. 例如, **a*** 可以匹配 ab 和 aaab. 它还可以匹配完全不包含 "a" 的任意字符串的开始处.\ **通配符:** 句点星号模式 **.*** 是匹配范围最广的模式之一, 因为它可以匹配零个或多个 *任意* 字符 (除了新行符: ``r 和``\ n). 例如, **abc.*123** 可以匹配 abcAnything123, 也能匹配 abc123.
+   * - **?**
+     - 问号匹配零或一个前面的字符, `字符类 <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##set>`_ 或 `子模式 <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##subpat>`_. 可以理解为 "前面的那项是可选的". 例如, **colou?r** 可以匹配 color 和 colour, 因为 "u" 是可选的.
+   * - **+**
+     - 加号匹配一个或多个前面的字符, `字符类 <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##class>`_ 或 `子模式 <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##subpat>`_. 例如 **a+** 可以匹配 ab 和 aaab. 但与 **a*** 和 **a?** 不同的是, 模式 **a+** 不会匹配开始处没有 "a" 的字符串.
+   * - {min,max}
+     - 匹配出现次数介于 *min* 和 *max* 的前面的字符, `字符类 <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##set>`_ 或 `子模式 <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##subpat>`_. 例如, **a{1,2}** 可以匹配 ab 但只匹配 aaab 中的前两个 a.此外, {3} 表示准确匹配 3 次, 而 {3\ **,**\ } 则表示匹配 3 次或更多. 注: 指定的数字必须小于 65536, 且第一个必须小于等于第二个.
+   * - **[...]**
+     - **字符类:** 方括号把一列字符或一个范围括在了一起 (或两者). 例如, **[abc]** 表示 "a, b 或 c 的中任何一个字符". 使用破折号来创建范围; 例如, **[a-z]** 表示 "在小写字母 a 和 z (包含的) 之间的任何一个字符". 列表和范围可以组合在一起; 例如 **[a-zA-Z0-9_]** 表示 "字母, 数字或下划线中的任何一个字符".字符类后面可以使用 *, ?, + 或 {min,max} 进行限定. 例如, **[0-9]+** 匹配一个或多个任意数字; 因此它可以匹配 xyz123 但不会匹配 abcxyz.通过 [[:xxx:]] 还支持下列 POSIX 命名集, 其中 xxx 是下列单词的其中一个: alnum, alpha, ascii (0-127), blank (space 或 tab), cntrl (控制字符), digit (0-9), xdigit (十六进制数), print, graph (排除了空格的打印字符), punct, lower, upper, space (空白), word (等同于 `\w <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##word>`_\ ).在字符类中, 只有在类中具有特殊含义的字符才需要进行转义; 例如 **[\^a]**\ , **[a-b]**\ , **[a]]** 和 **[\a]**.
+   * - **[^...]**
+     - 匹配 **不** 在类中的任何一个字符. 例如, **[^/]*** 匹配零个或多个 *不是* 正斜杠的任意字符, 例如 http://. 同样地, **[^0-9xyz]** 匹配既不是数字也不是 x, y 或 z 的任何一个字符.
+   * - **\d**
+     - 匹配任意一个数字 (相当于类 **[0-9]**\ ). 相反地，大写的\D表示“任意的\ *非*\ 数字字符”。这个和下面的两个都可以用在 `字符类 <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##set>`_ 中; 例如, **[\d.-]** 表示 "任何数字, 句点或负号".
+   * - **\s**
+     - 匹配任意单个空白字符 , 主要是空格, tab 和新行符 (\ ``r 和``\ n). 相反地, 大写的 \S 表示 "任何 *非*\ 空白字符".
+   * - **\w**
+     - 匹配任何单个 "单词" 字符, 即字母, 数字或下划线. 这等同于 **[a-zA-Z0-9_]**. 相反地, 大写的 \W 表示 "任何 *非*\ 单词字符".
+   * - **^ $**
+     - 抑扬符 (^) 和美元符 ($) 被称为 *锚*\ , 因为它们不消耗任何字符; 相反地, 它们把模式限定在被搜索字符串的开始或末尾进行匹配.在模式的开始处使用 **^** 表示需要在行的开始处进行匹配. 例如, **^abc** 可以匹配 abc123 但不匹配 123abc.在模式的末尾处使用 **$** 表示需要在行的末端进行匹配. 例如, **abc$** 可以匹配 123abc 但不能匹配 abc123.这两个锚还可以组合使用. 例如, **^abc$** 仅匹配 abc (即在它的前面或后面不能有另外的字符).如果被搜索的文本包含多行, 则可以使用 `"m" 选项 <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##Multiline>`_ 让锚应用于每行而不是把所有文本作为整体. 例如, **m)^abc$** 可以匹配 123\ ``r``\ nabc\ ``r``\ n789. 但如果没有 "m" 选项, 则不会形成匹配.
+   * - **\b**
+     - \b 表示 "单词边界", 它类似锚, 因为它不消耗任何字符. 它要求当前字符的 `状态为单词字符 (\w) <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##word>`_\ , 与前一个字符的状态相反. 它通常用来避免意外地匹配到在其他单词内的某个单词. 例如, **\bcat\b** 不会匹配 catfish, 但它可以匹配不论周围是否有标点或空白的 cat. 大写的 \B 则相反: 它要求当前字符 *不是* 单词的边界.
+   * - **|**
+     - 竖线将两个或多个可选项目分隔开来. 如果可选项目中 *任何一个* 满足条件, 则会形成匹配. 例如, **gray|grey** 既可以匹配 gray 也可以匹配 grey. 同样地, 模式 **gr(a|e)y** 中通过下面描述的括号的帮助可以实现同样的作用.
+   * - **(...)**
+     - 括在括号中的项目常用于:确定求值的顺序. 例如, **(Sun|Mon|Tues|Wednes|Thurs|Fri|Satur)day** 可以匹配任何一天的名称.把 *****\ , **?**\ , **+** 或 **{min,max}** 应用到 *系列* 字符而不只是单个字符. 例如, **(abc)+** 匹配一个或一串字符串 "abc"; 因此它可以匹配 abcabc123 但不会匹配 ab123 或 bc123.捕获子模式, 例如 **abc(.*)xyz** 中的句点星号. 例如, `RegExMatch() <https://ahkcn.github.io/docs/commands/RegExMatch.htm>`_ 会把匹配每个子模式的子字符串保存到 `输出数组 <https://ahkcn.github.io/docs/commands/RegExMatch.htm##Array>`_. 同样地, `RegExReplace() <https://ahkcn.github.io/docs/commands/RegExReplace.htm>`_ 中允许把匹配每个子模式的子字符串通过像 $1 这样的 `后向引用 <https://ahkcn.github.io/docs/commands/RegExReplace.htm##BackRef>`_ 重新插入到替换结果中. 要使用不捕获子模式的括号, 请把括号内的开始两个字符指定为 **?:**\ ; 例如: **(?:.*)**\ 在匹配过程中改变 `选项 <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##Options>`_. 例如, **(?im)** 会为模式的后续部分打开不区分大小写和多行选项 (如果它在子模式中则它会改变子模式的选项). 相反地, **(?-im)** 会关闭它们. 支持除 DPS\ ``r``\ n`a 外的所有选项.
+   * - **\t \r 等等.**
+     - 这些转义序列表示特殊的字符. 最常见的有 **\t** (tab), **\r** (回车) 和 **\n** (换行). 在 AutoHotkey, 在这些情况中还可以使用重音符 (\ ``) 代替反斜线. 还支持 \xhh 格式的转义序列, 其中 *hh* 是介于 00 和 FF 之间的任意 ANSI 字符的十六进制码.在 v1.0.46.06+, **\R** 表示 "单个任意类型的新行符", 即在 [``\ a 选项](https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##NEWLINE_ANY) 中列出的这些 (然而, \R 在 `字符类 <https://ahkcn.github.io/docs/misc/RegEx-QuickRef.htm##class>`_ 中仅仅表示字母 "R"). 在 v1.0.47.05+, **\R** 可以被限制为 CR, LF 和 CRLF 三种, 只需要在模式的开始处 (选项后面) 指定大写的 (\ *BSR_ANYCRLF) ; 例如 **im)(\*\ BSR_ANYCRLF)abc\Rxyz**
+   * - **\p{xx} \P{xx} \X**
+     - [AHK_L 61+]: Unicode 字符属性. 在 ANSI 版本中不支持. **\p{xx}** 匹配带 xx 属性的字符而 **\P{xx}** 匹配 *不带* xx 属性的任意一个字符. 例如, **\pL** 匹配任意一个字母而 **\p{Lu}** 匹配任意一个大写字母. **\X** 匹配组成扩展 Unicode 序列的任何数目的字符.对于受支持的属性名称的完整列表和其他细节, 请在 `www.pcre.org/pcre.txt <http://www.pcre.org/pcre.txt>`_ 中搜索 "\p{xx}".
+   * - **(*UCP)**
+     - [AHK\ *L 61+]: 考虑到性能, \d, \D, \s, \S, \w, \W, \b 和 \B 默认情况下只识别 ASCII 字符, 即使在 Unicode 版本中也是如此. 如果模式以 **(*UCP)** 开头, 则会使用 Unicode 属性来判断哪个字符匹配. 例如, \w 变成相当于 **[\p{L}\p{N}*\ ]\ ** 而 \d 变成等同于 **\ \p{Nd}**.
+
+
+**贪婪**\ ：默认情况下，\ *****\ 、\ **?**\ 、\ **+** 和 **{min,max}** 是贪婪的，因为它们消耗到\ *最后一个*\ 能满足整个模式的可能的所有字符。要让它们停在 *首个* 可能的字符, 请在它们后面加上问号. 例如, 模式 **<.+>** (其中没有问号) 表示: "搜索一个 <, 接着一个或多个任意字符, 然后是一个 >". 要在匹配 *整个* 字符串 **<**\ em>text</em\ **>** 时停止, 请在加号后加上问号: **<.+?>**. 这样会让匹配在第一个 '>' 处停止, 因此它只匹配第一个标签 **<**\ em\ **>**.
+
+**预测和回顾断言**\ ：这组 **(?=...)**\ 、\ **(?!...)**\ 、\ **(?<=...)** 和 **(?<!...)** 被称为\ *断言*\ ，因为它们要求符合某个条件但不消耗任何字符。例如, **abc(?=.*xyz)** 中含有预测断言, 它要求在字符串 abc 右边的某个位置存在字符串 xyz (如果不存在, 则匹配失败). **(?=...)** 被称为 *正* 预测断言, 因为它要求指定的模式存在. 相反地, **(?!...)** 是 *负* 预测断言, 因为它要求指定的模式 *不* 存在. 同样地, **(?<=...)** 和 **(?<!...)** 分别是正的和负的 *回顾* 断言, 因为它们检查当前位置的 *左边* 而不是右边. 回顾比预测受到更多的限制, 因为它们不支持可变大小的限定符, 例如 *****\ , **?** 和 **+**. 转义序列 \K 类似于回顾断言, 因为它会让前一个匹配的字符在最后的匹配字符串中省略. 例如, **foo\Kbar** 可以匹配 "foobar" 但报告匹配的结果为 "bar".
+
+Building Blocks
+###############
+
+.. list-table::
+   :header-rows: 1
+
+   * - Regex
+     - Interpretation
+   * - ``r'\s*'``
+     - 0 or more spaces
+   * - ``r'\d+'``
+     - 1 or more digits
+   * - ``r'[A-Fa-f0-7]{5}'``
+     - Exactly 5 hexadecimal 'digits'
+   * - ``r'\w+\.\d{2,}'``
+     - 1 or more 'wordish' characters, followed by a full-stop, then 2 or more digits
+   * - ``r'^[^@]+@\w+'``
+     - One more non-@ characters at the start of a line, followed by a '@' then 1 or more 'wordish' characters.
+   * - ``r'(uk|eu|fr)$'``
+     - The characters 'uk' or 'eu' or 'fr' at the end of a line.
+
+
+Examples
+########
+
+.. code-block:: python
+
+   re.match(r'^[^@]+@([a-z0-9\-]+\.){1,5}[a-z0-9\-]+$', s)
+
+   re.match(r'\d{4}-\d{2}-\d{2}', s)
+
+   re.match(r'^\s*$', s)
+
+   re.match(r'^(http|https|ftp):[\/]{2}([a-zA-Z0-9\-]+\.){1,4}[a-zA-Z]{2,5}(:[0-9]+)?\/?([a-zA-Z0-9\-\._\?\'\/\\\+\&\%\$##\=~]*)',s)
+
+   re.match(r'([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})',s)
+
+   regex = r"""
+   ([GIR] 0[A]{2})|    ## Girobank 
+   (
+     (
+       ([A-Z][0-9]{1,2})| ## e.g A00...Z99
+         (
+           ([A-Z][A-HJ-Y][0-9]{1,2})|  ## e.g. AB54...ZX11
+             (([A-Z][0-9][A-Z])|  ## e.g. A0B...Z9Z 
+             ([A-Z][A-HJ-Y][0-9][A-Z]?))  ## e.g. WC1 or WC1H
+           )
+         )
+       \s?[0-9][A-Z]{2} ## e.g. 5RX
+     )
+   """
+   re.match(regex,s,re.VERBOSE|re.IGNORECASE) ## Can also use: re.X|re.I
+
+^ This is the `government's own regex <https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/488478/Bulk_Data_Transfer_-_additional_validation_valid_from_12_November_2015.pdf>`_ but is probably *not* 100% accurate.
+
+Resources
+#########
+
+
+* `Python Documentation <https://docs.python.org/3/howto/regex.html>`_
+* `Real Python: Regular Expressions 1 <https://realpython.com/regex-python/>`_
+* `Real Python: Regular Expressions 2 <https://realpython.com/regex-python-part-2/>`_
+* `Data Camp RegEx Tutorial <https://www.datacamp.com/community/tutorials/python-regular-expression-tutorial>`_
+* `Introduction to Regex <https://medium.com/better-programming/introduction-to-regex-8c18abdd4f70>`_
+* `Understanding RegExes in Python <https://medium.com/better-programming/introduction-to-regex-8c18abdd4f70>`_
+* `Demystifying RegExes in Python <https://medium.com/@snk.nitin/your-guide-to-using-regular-expressions-in-python-a7908b8e4b68>`_
+* `Python RegExes <https://medium.com/@devopslearning/python-regular-expression-8ee28d35f3a7>`_
+* `Mastering String Methods in Python <https://towardsdatascience.com/mastering-string-methods-in-python-456174ede911>`_
+
+Thanks to `Yogesh Chavan <https://levelup.gitconnected.com/extremely-useful-regular-expression-examples-for-real-world-applications-567e844a0822>`_ and `Nicola Pietroluongo <https://www.sitepoint.com/demystifying-regex-with-practical-examples/>`_ for examples.
+
+Cleaning Text
+~~~~~~~~~~~~~
+
+Vectorisation & Parallelisation
+"""""""""""""""""""""""""""""""
+
+Pandas.apply() vs. Numpy
+########################
+
+Numpy is fully vectorised and will almost *always* out-perform operations like Pandas ``apply``\ , but both are massive improvements on for loops:
+
+
+* Execute row-wise and column-wise operations.
+* Apply any arbitrary function to individual elements or whole axes.
+* Can make use of ``lambda`` functions too for 'one off' operations.
+
+.. code-block:: python
+
+   import numpy as np
+   df.apply(np.sqrt) ## Square root of all values
+   df.apply(np.sum, axis=0) ## Sum by row
+
+Lambda Functions
+################
+
+.. code-block:: python
+
+   >>> x = lambda a : a + 10
+   >>> print(x(5))
+   15
+
+Or:
+
+.. code-block:: python
+
+   >>> full_name = lambda first, last: f'Full name: {first.title()} {last.title()}'
+   >>> full_name('guido', 'van rossum')
+   'Guido Van Rossum'
+
+Dealing with Structured Text
+""""""""""""""""""""""""""""
+
+Beautiful Soup & Selenium
+#########################
+
+Two stages to acquiring web-based documents:
+
+
+#. Accessing the document: ``urllib`` can deal with many issues (even authentication), but *not* with dynamic web pages (which are increasingly common); for that, you need `Selenium <https://selenium-python.readthedocs.io/>`_ (library + driver).
+#. Processing the document: simple data can be extracted from web pages with RegularExpressions, but *not* with complex (esp. dynamic) content; for that, you need `BeautifulSoup4 <https://www.crummy.com/software/BeautifulSoup/bs4/doc/>`_.
+
+These interact with wider issues of Fair Use (e.g. rate limits and licenses); processing pipelines (e.g. saving WARCs or just the text file, multiple stages, etc.); and other practical constraints.
+
+Regular Expressions / Breaks
+############################
+
+Need to look at how the data is organised:
+
+
+* For very large corpora, you might want one document at a time (batch).
+* For very large files, you might want one line at a time (streaming).
+* For large files in large corpora, you might want more than one machine.
+
+^ See the `OpenVirus Project <https://blogs.bl.uk/digital-scholarship/2020/05/searching-etheses-for-the-openvirus-project.html>`_.
+
+Managing Vocabularies
+"""""""""""""""""""""
+
+Starting Points
+###############
+
+These strategies can be sued singly or all-together:
+
+
+* Stopwords
+* Case
+* Accent-stripping
+* Punctuation
+* Numbers
+
+Sample stopwords:
+
+.. code-block:: python
+
+   {'further', 'her', 'their', 'we', 'just', 'why', 'or', 'each', 's', "it's", 'ma', 'below', 'am', 'more', "couldn't", "should've", 'was', "mightn't", 'weren', 'ourselves', 'have', 'if', 'then', 'from', ...}
+
+But these are just a *starting* point!
+
+^ What's the semantic difference between 1,000,000 and 999,999?
+
+Distributional Pruning
+######################
+
+We can prune from both ends of the distribution:
+
+
+* Overly rare words: what does a word used in *one* document help us to do?
+* Overly common ones: what does a word used in *every* document help us to do?
+
+^ Again, no hard-and-fast rules: can be done on raw counts, percentage of all documents, etc. Choices will, realistically, depend on the nature of the data.
+
+Stemming & Lemmatisation
+""""""""""""""""""""""""
+
+Why Stem or Lemmatise?
+######################
+
+Reduce the breadth of human expression:
+
+
+* Porter & Snowball Stemming: rules-based truncation to a stem (can be augmented by language awareness).
+* Lemmatisation: dictionary-based 'deduplication' to a lemma (can be augmented by POS-tagging).
+
+Compare:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Source
+     - Porter
+     - Snowball
+     - Lemmatisation
+   * - monkeys
+     - monkey
+     - monkey
+     - monkey
+   * - cities
+     - citi
+     - citi
+     - city
+   * - complexity
+     - complex
+     - complex
+     - complexity
+   * - Reades
+     - read
+     - read
+     - Reades
+
+
+Resources
+"""""""""
+
+
+* `Vectorisation in Python <https://towardsdatascience.com/python-vectorization-5b882eeef658>`_
+* `Lambda Functions <https://www.w3schools.com/python/python_lambda.asp>`_
+* `Real Python Lambda Functions <https://realpython.com/python-lambda/>`_
+* `Stemming words with NLTK <https://pythonprogramming.net/stemming-nltk-tutorial/>`_
+* `Stemming and Lemmatisation in Python <https://www.datacamp.com/community/tutorials/stemming-lemmatization-python>`_
+* `KD Nuggets: A Practitioner's Guide to NLP <https://www.kdnuggets.com/2018/08/practitioners-guide-processing-understanding-text-2.html>`_
+* `KD Nuggets: Linguistic Fundamentals for Natural Language Processing: 100 Essentials from Semantics and Pragmatics <https://www.kdnuggets.com/2020/08/linguistic-fundamentals-natural-language-processing.html>`_
+* `Roadmap to Natural Language Processing (NLP) <https://www.kdnuggets.com/2020/10/roadmap-natural-language-processing-nlp.html>`_
+
+Analysing Text
+~~~~~~~~~~~~~~
+
+One-Hot Encoding
+""""""""""""""""
+
+May already be familiar with concept as 'dummy variables' in economics/regression:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Document
+     - UK
+     - Top
+     - Pop
+     - Coronavirus
+   * - News
+     - 1
+     - 1
+     - 0
+     - 1
+   * - Culture
+     - 0
+     - 1
+     - 1
+     - 0
+   * - Politics
+     - 1
+     - 0
+     - 0
+     - 1
+   * - Entertainment
+     - 1
+     - 1
+     - 1
+     - 1
+
+
+^ Certainly One-Hot encoders are rarely, if ever, used this way, but for keyword detection this might be appropriate: i.e. this word was used in this document!
+
+^ Only difference is One Hot == $$n$$ variables, Dummy == $$n-1$$.
+
+^ Definitely some 'gotchas' in deployment: one-hot models shouldn't have an intercept unless you apply a 'ridge shrinkage penalty'. Standardisation affects whether or not an intercept is needed.
+
+The 'Bag of Words'
+""""""""""""""""""
+
+Could simply be seen as an extension of binarised approach on preceding slide:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Document
+     - UK
+     - Top
+     - Pop
+     - Coronavirus
+   * - News
+     - 4
+     - 2
+     - 0
+     - 6
+   * - Culture
+     - 0
+     - 4
+     - 7
+     - 0
+   * - Politics
+     - 3
+     - 0
+     - 0
+     - 3
+   * - Entertainment
+     - 3
+     - 4
+     - 8
+     - 1
+
+
+BoW in Practice
+"""""""""""""""
+
+Enter, stage left, `scikit-learn <https://scikit-learn.org/stable/>`_\ :
+
+.. code-block:: python
+
+   from sklearn.feature_extraction.text import CountVectorizer
+   vectorizer = CountVectorizer()
+
+   vectorizer.fit(texts)
+   vectors = vectorizer.transform(texts)
+
+   ## Same thing:
+   ## vectors = vectorizer.fit_transform(texts)
+
+   print(f'Vocabulary: {vectorizer.vocabulary_}')
+   print(f'Full vector: {vectors.toarray()}')
+
+TF/IDF
+""""""
+
+Builds on Count Vectorisation by normalising the document frequency measure by the overall corpus frequency. Common words receive a large penalty:
+
+$$
+W(t,d) = TF(t,d) / log(N/DF_{t})
+$$
+
+For example: if the term 'cat' appears 3 times in a document of 100 words then $TF(t,d)=3/100$. If there are 10,000 documents and cat appears in 1,000 documents then $N/DF_{t}=10000/1000$ and $log(10)=1$, so IDF=1 and TF/IDF=0.03.
+
+TF/IDF in Practice
+""""""""""""""""""
+
+.. code-block:: python
+
+   from sklearn.feature_extraction.text import TfidfVectorizer
+   vectorizer = TfidfVectorizer()
+
+   vectorizer.fit(texts)
+   vectors = vectorizer.transform(texts)
+
+   ## Same thing:
+   ## vectors=vectorizer.fit_transform(texts)
+
+   print(f'Vocabulary: {vectorizer.vocabulary_}')
+   print(f'Full vector: {vectors.toarray()}')
+
+^ What do you notice about how this code differs from the CountVectorizer?
+
+Term Co-Occurence Matrix (TCM)
+""""""""""""""""""""""""""""""
+
+Three input texts:
+
+
+* the cat sat on the mat
+* the cat sat on the fluffy mat
+* the fluffy ginger cat sat on the mat
+
+.. list-table::
+   :header-rows: 1
+
+   * - 
+     - fluffy
+     - mat
+     - ginger
+     - sat
+     - on
+     - cat
+     - the
+   * - fluffy
+     - 
+     - 1
+     - 1
+     - 
+     - 0.5
+     - 0.5
+     - 2.0
+   * - mat
+     - 
+     - 
+     - 
+     - 
+     - 0.5
+     - 
+     - 1.5
+   * - ginger
+     - 
+     - 
+     - 
+     - 0.5
+     - 0.5
+     - 1.0
+     - 1.5
+   * - sat
+     - 
+     - 
+     - 
+     - 
+     - 3.0
+     - 3.0
+     - 2.5
+   * - on
+     - 
+     - 
+     - 
+     - 
+     - 
+     - 1.5
+     - 3.0
+   * - cat
+     - 
+     - 
+     - 
+     - 
+     - 
+     - 
+     - 2.0
+   * - the
+     - 
+     - 
+     - 
+     - 
+     - 
+     - 
+
+
+Text2Vec
+""""""""
+
+Typically some kind of 2 or 3-layer neural network that 'learns' (using as big a training data set as possible) how to embed the TCM into a lower-dimension representation. 
+
+Conceptual similarities to PCA in terms of what we're trying to achieve, but the *process* is utterly different.
+
+Many different approaches, but `GloVe <https://nlp.stanford.edu/projects/glove/>`_ (Stanford), `word2vec <https://code.google.com/archive/p/word2vec/>`_ (Google), `fastText <https://fasttext.cc/docs/en/english-vectors.html>`_ (Facebook), and `ELMo <https://allennlp.org/elmo>`_ (Allen) or `BERT <https://github.com/google-research/bert>`_ (Google) are probably the best-known.
+
+Sentiment Analysis
+""""""""""""""""""
+
+Requires us to deal in great detail with bi- and tri-grams because *negation* and *sarcasm* are hard. Also tends to require training/labelled data.
+
+
+.. raw:: html
+
+   <div align="center">
+   <a href="https://medium.com/@tomyuz/a-sentiment-analysis-approach-to-predicting-stock-returns-d5ca8b75a42">
+   <img src="https://raw.githubusercontent.com/jreades/i2p/master/lectures/img/Sentiment_Analysis.png" width="500" />
+   </a>
+   </div>
+
+
+Clustering
+""""""""""
+
+.. list-table::
+   :header-rows: 1
+
+   * - Cluster
+     - Geography
+     - Earth Science
+     - History
+     - Computer Science
+     - Total
+   * - 1
+     - 126
+     - 310
+     - 104
+     - 11,018
+     - 11,558
+   * - 2
+     - 252
+     - 10,673
+     - 528
+     - 126
+     - 11,579
+   * - 3
+     - 803
+     - 485
+     - 6,730
+     - 135
+     - 8,153
+   * - 4
+     - 100
+     - 109
+     - 6,389
+     - 28
+     - 6,626
+   * - Total
+     - 1,281
+     - 11,577
+     - 13,751
+     - 11,307
+     - 37,916
+
+
+Resources
+"""""""""
+
+
+* `One-Hot vs Dummy Encoding <https://stats.stackexchange.com/questions/224051/one-hot-vs-dummy-encoding-in-scikit-learn>`_
+* `Categorical encoding using Label-Encoding and One-Hot-Encoder <https://towardsdatascience.com/categorical-encoding-using-label-encoding-and-one-hot-encoder-911ef77fb5bd>`_
+* `Count Vectorization with scikit-learn <https://towardsdatascience.com/natural-language-processing-count-vectorization-with-scikit-learn-e7804269bb5e>`_
+* `TFIDF.com <http://www.tfidf.com/>`_
+* `The TF*IDF Algorithm Explained <https://www.onely.com/blog/what-is-tf-idf/>`_
+* `How to Use TfidfTransformer and TfidfVectorizer <https://kavita-ganesan.com/tfidftransformer-tfidfvectorizer-usage-differences/##.X7gXhhP7Tlw>`_
+* `SciKit Learn Feature Extraction <https://scikit-learn.org/stable/modules/classes.html##module-sklearn.feature_extraction>`_
+* `Your Guide to LDA <https://medium.com/@lettier/how-does-lda-work-ill-explain-using-emoji-108abf40fa7d>`_
+* `Machine Learning — Latent Dirichlet Allocation LDA <https://jonathan-hui.medium.com/machine-learning-latent-dirichlet-allocation-lda-1d9d148f13a4>`_
+* `A Beginner’s Guide to Latent Dirichlet Allocation(LDA) <https://towardsdatascience.com/latent-dirichlet-allocation-lda-9d1cd064ffa2>`_
+* `Analyzing Documents with TF-IDF <https://programminghistorian.org/en/lessons/analyzing-documents-with-tfidf>`_
+
+Basically any of the lessons on `The Programming Historian <https://programminghistorian.org/en/lessons/>`_.
+
+----
+
+More Resources
+~~~~~~~~~~~~~~
+
+
+* `Introduction to Word Embeddings <https://towardsdatascience.com/introduction-to-word-embeddings-4cf857b12edc>`_
+* `The Current Best of Universal Word Embeddings and Sentence Embeddings <https://medium.com/huggingface/universal-word-sentence-embeddings-ce48ddc8fc3a>`_
+* `Using GloVe Embeddings <http://text2vec.org/glove.html>`_
+* `Working with Facebook's FastText Library <https://stackabuse.com/python-for-nlp-working-with-facebook-fasttext-library/>`_
+* `Word2Vec and FastText Word Embedding with Gensim <https://towardsdatascience.com/word-embedding-with-word2vec-and-fasttext-a209c1d3e12c>`_
+* `Sentence Embeddings. Fast, please! <https://towardsdatascience.com/fse-2b1ffa791cf9>`_
+* `PlasticityAI Embedding Models <https://github.com/plasticityai/magnitude>`_
+* `Clustering text documents using *k*\ -means <https://scikit-learn.org/stable/auto_examples/text/plot_document_clustering.html##sphx-glr-auto-examples-text-plot-document-clustering-py>`_
+* `Topic extraction with Non-negative Matrix Factorization and LDA <https://scikit-learn.org/stable/auto_examples/applications/plot_topics_extraction_with_nmf_lda.html##sphx-glr-auto-examples-applications-plot-topics-extraction-with-nmf-lda-py>`_
+
+Agenda
+^^^^^^
+
+Agenda
+~~~~~~
+
+
+* Different plotting options: https://stackoverflow.com/a/37970713
+
+  * Short Answer: you don't, I'm a creature of habit and lazy.
+  * Longer Answer: I prefer to show you *one* way that works generally, than two or three different ways that require you to change your code for each.
+
+* Floating Point Arithmetic
+
+  * Hat tip for this: https://github.com/jreades/i2p/issues/15
+  * Floating Point errors are a *fundamental* cause of problems in many applications and they are *hard* to debug.
+
+Techniques
+~~~~~~~~~~
+
+
+* CSLs and LaTeX:
+
+  * Short answer: `no <https://tex.stackexchange.com/a/69284>`_
+  * For full LaTeX bibliographies you will need either BibLaTeX or Biber as these are more powerful and offer more options.
+  * CSLs are for pandoc alone AFAIK.
+  * Here's a nice RMarkdown tutorial: https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html
+
+* RegExes
+
+  * Part 1: ``[A-F]`` has the special meaning 'A-through-F' (i.e. ``A|B|C|D|E|F``\ ); whereas the ``{m,n}`` syntax is for something *repeating* between ``m`` and ``n`` times (inclusive). So ``m`` and ``n`` must be numeric. I think you're being misled by Python's dictionary sytnax?
+  * Part 2: ``^`` has *two* meanings:
+
+    * Inside a ``[...]`` and as the first character it means *not* (i.e. ``[^A-F]``\ ) would negate 'A-through-F'.
+    * At the start of a regular expression it means *at the start of a line* (i.e. ``r'^A'`` would match lines starting with an ``A``\ ).
+
+* Fit/Transform
+
+  * Fitting and transformation do not have to happen at the same time.
+  * But fitting cannot be updated *afterwards* as the mapping/weights have been calculated.
+  * So values that weren't fitted are likely to be dropped during the transform stage because there's no mapping/weight for them.
+  * You might have separate fit and transform calls if you don't want to/need to transform all of your data at once and only want to transform parts of the full data set. So you fit once and then transform multiple times.
+  * You might also have separate fit and transform calls if your data is streaming (but see limitation above).
+
+* How you do you add a bib file to Markdown?
+
+  * Yes, only pandoc can make sense of the bib file *in Markdown*. 
+  * LaTeX can process bib files too though.
+
+Concepts
+~~~~~~~~
+
+
+* Can we measure the complexity of a text?
+
+  * Up to a point: there are all sorts of ways to measure this! What is meaningful depends on the language, sentence structure, grammar, etc.! 
+
+* Shared readings!!!
+
+  * https://collections.plos.org/collection/science-of-stories/
+  * https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0225385
+  * There are a lot more on this! Great finds though!
+
+Triumphs
+~~~~~~~~
+
+
+* 
+  Using ``numpy``
+
+
+  * Very nice! 🎩tip
+  * Using numpy directly will definitely represent a speed-up, but you would only benefit for queries that numpy can cope with (primarily NaNs and Numbers--which is a pretty big span!)
+
+* 
+  Pronunciation
+
+
+  * Hah, hah, you're not the only one!

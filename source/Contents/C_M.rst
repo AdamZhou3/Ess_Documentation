@@ -73,6 +73,18 @@ Shell&Git
 Python
 ======
 
+Python Basic
+------------
+
+Advanced Python
+---------------
+
+并发
+----
+
+ 
+^
+
 Gallery
 -------
 
