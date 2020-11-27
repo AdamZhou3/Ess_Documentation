@@ -76,6 +76,11 @@ Moran's I
 LISA
 """"
 
+ggplot 2 seminar
+~~~~~~~~~~~~~~~~
+
+https://binchi1990.github.io/CASA_seminar2/challenges.html##challenge-1-reorder-the-items-in-legend
+
 Quantitative Methods
 ====================
 
@@ -1317,6 +1322,280 @@ Lectures
 Notebook as Documents
 ~~~~~~~~~~~~~~~~~~~~~
 
+Not Just for Code
+"""""""""""""""""
+
+..
+
+   Markdown and Notebooks can be used for a lot more than just code! In conjunction with Pandoc and/or LaTeX they become platforms for publication.
+
+
+Recall: Tangled Workflows
+"""""""""""""""""""""""""
+
+It's not *just* about mixing code and comment, we *also* want:
+
+
+* To separate *content* from *presentation*
+* To define *mappings* between presentation styles
+* To produce the *best-quality* output for the format chosen
+
+
+.. image:: http://www.zzzhou.me/images/2020/11/25/126z19ld.jpg
+   :target: http://www.zzzhou.me/images/2020/11/25/126z19ld.jpg
+   :alt: 
+
+
+^ Examples of this include CSS for web sites, LaTeX templates, and Markdown styles.
+^ `MVC approach <https://hackernoon.com/beginners-guide-to-ruby-on-rails-mvc-model-view-controller-pattern-4z19196a>`_ to software design.
+
+Pandoc
+""""""
+
+Tool for converting documents *between* formats, including:
+
+
+* Plain Text/YAML
+* Markdown
+* LaTeX/PDF
+* HTML/Reveal.js
+* Jupyter Notebook
+* XML/ODT/DOCX
+* EPUB/DocBook
+* BibTeX/JSON
+
+LaTeX
+"""""
+
+Intended for `type-setting of scientific documents <https://www.latex-project.org/about/>`_\ , but has been used for slides, posters, CVs, etc. It is *not* a word processor, it's more like a *compiler*.
+
+
+.. image:: http://www.zzzhou.me/images/2020/11/25/LaTeX-1.png
+   :target: http://www.zzzhou.me/images/2020/11/25/LaTeX-1.png
+   :alt: LaTeX-1
+
+
+
+.. image:: http://www.zzzhou.me/images/2020/11/25/LaTeX-2.png
+   :target: http://www.zzzhou.me/images/2020/11/25/LaTeX-2.png
+   :alt: LaTeX-2
+
+
+^ This format is based on Edward Tufte's VSQD and can be found onHub](https://tufte-latex.github.io/tufte-latex/).
+
+LaTeX in Practice
+#################
+
+You  write LaTeX in any text editor, but specialist apps like `Texpad <https://www.texpad.com/>`_ or `Overleaf <https://www.overleaf.com/>`_ make it easier.
+
+.. code-block:: latex
+
+   \documentclass[11pt,article,oneside]{memoir}
+   \newcommand{\bl}{\textsc{bl}~\/}
+   \usepackage{tabularx}
+
+   \begin{document}
+   \maketitle 
+
+   This report provides an overview of activities ...
+
+   \section{Applications}
+   A primary objective was the submission...
+
+^ UCL has an institutional license for Overleaf. 
+^ This document is then *compiled* (or 'typeset') with the commands provided by the preamble being interpreted and applied. Depending on the length of the document and sophistication of the styles it can take up to 3 or 4 minutes for a book-length document, but small documents should compile in a few seconds.
+
+^ Compilation allows us to do things like have Master Documents that actually work, include PDFs, make forwards and backwards references.
+
+BibTeX
+######
+
+Provides bilbiographic support for LaTeX but widely used by other utilities as is *also* plain-text.
+
+.. code-block:: bibtex
+
+   @article{Lavin:2019,
+           Author = {Lavin, Matthew J.},
+           Doi = {10.46430/phen0082},
+           Journal = {The Programming Historian},
+           Number = {8},
+           Title = {Analyzing Documents with TF-IDF},
+           Year = {2019},
+           Bdsk-Url-1 = {https://doi.org/10.46430/phen0082}}
+
+   @incollection{Kitchin:2016,
+           Author = {Kitchin, R. and Lauriault, T.P. and McArdie, G.},
+           Booktitle = {Smart Urbanism},
+           Chapter = {2},
+           Editor = {Marvin, Luque-Ayala, McFarlane},
+           Title = {Smart Cities and the Politics of Urban Data},
+           Year = {2016}}
+
+BibTeX in Practice
+##################
+
+To reference a document we then need to tell LaTeX or Pandoc where to look:
+
+.. code-block:: latex
+
+   \bibliographystyle{apacite} ## LaTeX
+   \bibliography{Spatial_Data_Chapter.bib} ## LaTeX
+
+With citations following formats like:
+
+.. code-block:: latex
+
+   \citep[p.22]{Reades2018} ## LaTeX
+
+Or: 
+
+.. code-block:: markdown
+
+   [@dignazio:2020, chap. 4] ## Markdown
+
+Reveal.js
+#########
+
+JavaScript-based presentation framework. Can use Markdown (using the separator ``---`` to separate slides) to generate portable interactive slides including references/bibliographies.
+
+Compare:
+
+
+* https://github.com/darribas/wmn/blob/master/src/slides/lecture_01.md
+* https://github.com/darribas/wmn/blob/master/src/slidedecks/lecture_01.html
+* http://darribas.org/wmn/slidedecks/lecture_01.html##/
+
+From Markdown...
+################
+
+.. code-block:: bash
+
+   pandoc Syllabus.md \
+     -H ./bib/head.tex \
+     -H ./bib/chapter.tex \
+     -H ./bib/refs.tex \
+     -V documentclass=memoir \
+     --pdf-engine=xelatex \
+     --filter=pandoc-citeproc \
+     --metadata-file=metadata.yml \
+     --highlight-style=pygments \
+     -o Syllabus.pdf
+
+To PDF!
+#######
+
+
+.. image:: http://www.zzzhou.me/images/2020/11/25/Syllabus.png
+   :target: http://www.zzzhou.me/images/2020/11/25/Syllabus.png
+   :alt: Syllabus
+
+
+Pros
+####
+
+
+* Simplicity (while writing)
+* Flexibility of Form
+* Version Control
+* High-Quality Outputs
+* Enforced Structure
+
+Cons
+####
+
+
+* Complexity (when formatting)
+* Collaboration (can be harder)
+
+^ If your document lacks structure (headings, sub-headings, etc.) then it's *impossible* to get a good-looking document. 
+
+^ Conversely, *because* LaTeX and Markdown force you to add structure they ensure that things like ToCs, ToFs, and Bibliographies will generally work 'as advertised'.
+
+Recap of Formatting
+"""""""""""""""""""
+
+Headings
+########
+
+.. list-table::
+   :header-rows: 1
+
+   * - Markdown
+     - LaTeX
+   * - ``## Heading Level 1``
+     - ``\section{Heading Level 1}``
+   * - ``### Heading Level 2``
+     - ``\subsection{Heading Level 2}``
+   * - ``#### Heading Level 3``
+     - ``\subsubsection{Heading Level 3}``
+
+
+Inline Elements
+###############
+
+.. list-table::
+   :header-rows: 1
+
+   * - Markdown
+     - LaTeX
+   * - ``1. Numbered item 1``
+     - ``\begin{enumerate} \n \item ... \end{enumerate}``
+   * - ``- Bulleted list item 1``
+     - ``\begin{itemize} \n \item ... \n \end{itemize}``
+   * - ``_italics_`` or ``*italics*``
+     - ``\emph{italics}`` or ``\textit{italics}``
+   * - ``**bold**``
+     - ``\textbf{bold}``
+   * - ``> blockquote``
+     - ``\begin{quote} \n blockquote \end{quote}``
+   * - ``Some `code` is here``
+     - ``Some \texttt{code} is here``
+   * - ``[Link Text](URL)``
+     - ``\href{Link Text}{URL}``
+   * - ``![Alt Text](Image URL)``
+     - ``\begin{figure}\n \includegraphics[opts]{...}\n \end{figure}``
+
+
+Mathematics
+###########
+
+.. list-table::
+   :header-rows: 1
+
+   * - Markdown
+     - LaTeX
+   * - Same as LaTex with 2 $'s
+     - :math:`x=5`
+   * - Same as LaTex with 2 $'s
+     - :math:`\pi`
+   * - Same as LaTex with 2 $'s
+     - :math:`e = mc^{2}`
+
+
+We can show all this directly *in* the Notebook!
+$$\pi$$; $$e = mc^{2}$$; $$\int\ *{0}^{\inf} x^2 \,dx$$; $$\sum*\ {n=1}^{\infty} 2^{-n} = 1$$
+
+Overleaf `has good documentation <https://www.overleaf.com/learn/latex/Main_Page>`_ for most (basic) applications.
+
+Recap
+"""""
+
+..
+
+   You will usually want to Google most things to do with laying out LaTeX code.
+
+
+Resources
+"""""""""
+
+
+* `Jupyter Tips and Tricks <https://www.kaggle.com/tientd95/jupyter-notebook-tricks>`_
+* `Pandoc Demos <https://pandoc.org/demos.html>`_
+* `Beginner's Guide to Jupyter Notebooks <https://towardsdatascience.com/beginners-guide-to-jupyter-notebook-8bb85b85085>`_
+* `7 Essential Tips to Writing With Jupyter Notebooks <https://towardsdatascience.com/7-essential-tips-for-writing-with-jupyter-notebook-60972a1a8901##699a>`_
+* `Version Control with Jupyter <https://towardsdatascience.com/version-control-with-jupyter-notebook-b9630bc5996e>`_
+* `Sustainable Publishing using Pandoc and Markdown <https://programminghistorian.org/en/lessons/sustainable-authorship-in-plain-text-using-pandoc-and-markdown>`_
+
 Patterns in Text
 ~~~~~~~~~~~~~~~~
 
@@ -1886,7 +2165,7 @@ $$
 For example: if the term 'cat' appears 3 times in a document of 100 words then $TF(t,d)=3/100$. If there are 10,000 documents and cat appears in 1,000 documents then $N/DF_{t}=10000/1000$ and $log(10)=1$, so IDF=1 and TF/IDF=0.03.
 
 TF/IDF in Practice
-""""""""""""""""""
+##################
 
 .. code-block:: python
 
@@ -1982,8 +2261,8 @@ Three input texts:
      - 
 
 
-Text2Vec
-""""""""
+Text2Vec & word embedding
+"""""""""""""""""""""""""
 
 Typically some kind of 2 or 3-layer neural network that 'learns' (using as big a training data set as possible) how to embed the TCM into a lower-dimension representation. 
 
@@ -1997,14 +2276,12 @@ Sentiment Analysis
 Requires us to deal in great detail with bi- and tri-grams because *negation* and *sarcasm* are hard. Also tends to require training/labelled data.
 
 
-.. raw:: html
+.. image:: http://www.zzzhou.me/images/2020/11/25/Sentiment_Analysis.png
+   :target: http://www.zzzhou.me/images/2020/11/25/Sentiment_Analysis.png
+   :alt: Sentiment_Analysis
 
-   <div align="center">
-   <a href="https://medium.com/@tomyuz/a-sentiment-analysis-approach-to-predicting-stock-returns-d5ca8b75a42">
-   <img src="https://raw.githubusercontent.com/jreades/i2p/master/lectures/img/Sentiment_Analysis.png" width="500" />
-   </a>
-   </div>
 
+`A Sentiment Analysis Approach to Predicting Stock Returns <https://medium.com/@tomyuz/a-sentiment-analysis-approach-to-predicting-stock-returns-d5ca8b75a42>`_
 
 Clustering
 """"""""""
@@ -2049,6 +2326,13 @@ Clustering
      - 11,307
      - 37,916
 
+
+Topic Modelling
+"""""""""""""""
+
+Learning associations of words (or images or many other things) to hidden 'topics' that generate them:
+
+LDA
 
 Resources
 """""""""
@@ -2163,3 +2447,6 @@ Triumphs
 
 
   * Hah, hah, you're not the only one!
+
+Workshop
+^^^^^^^^
