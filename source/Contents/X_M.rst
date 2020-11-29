@@ -2450,3 +2450,561 @@ Triumphs
 
 Workshop
 ^^^^^^^^
+
+Practical
+^^^^^^^^^
+
+Week 8: Visualising Data
+------------------------
+
+Lectures
+^^^^^^^^
+
+Linking Data
+~~~~~~~~~~~~
+
+
+* 
+  A **join** refers to the merging of two (or more) data tables using one (or more) matching columns:
+
+* 
+  general join
+
+
+  * ``new_df = pd.merge(df1, df2, on='SensorID')``
+  * using one (or more) matching columns:
+
+* 
+  inner join
+
+
+  * ``new_df = pd.merge(df1, df2, how = 'inner', left_on  = 'SensorID', right_on = 'SensorKey')``
+  * non-matching rows are dropped:
+
+* 
+  outer join 
+
+
+  * ``new_df = pd.merge(df1, df2, how = 'outer', on  = 'SensorID')``
+  * all rows are retained, including ones with no match
+
+* 
+  left join 
+
+
+  * all rows on the left table are retained, including ones with no match, but unmatched right rows are dropped:
+
+* 
+  **Append**\ : can be used to add a dict, Series, or DataFrame to the 'bottom' of an existing *df*. It’s *not* advisable to extend a *df* one row at a time (\ **do bulk concatenations instead**\ ). 
+
+
+  * 
+    .. code-block:: python
+
+       to_append = [
+           {'SensorID': 5, 'Parameter': 'Humidity', 'Value': 0.45},
+           {'SensorID': 5, 'Parameter': 'Humidity', 'Value': 0.31},
+           {'SensorID': 4, 'Parameter': 'Temperature', 'Value': 2},
+           {'SensorID': 3, 'Parameter': 'Temperature', 'Value': 3}]
+       df2.append(to_append)
+
+  * 
+    vertical appends
+
+* 
+  **Concat**\ : can be used to concatenate two *dfs* together along *either* axis (rows or columns) “while performing optional set logic (union or intersection) of the indexes (if any) on the other axes.”
+
+
+  * 
+    .. code-block:: python
+
+         df3 = pd.DataFrame.from_dict({
+             'SensorID': [2,3,8,9,10],
+             'Place': ['STA','LUT','BHX','MAN','INV'],
+             'Owner': ['BAA','Luton LA','???','???','???']
+         })
+         pd.concat([df1, df3], ignore_index=True)
+
+* 
+  Which one better?
+
+
+  * 
+    A very high level difference is that ``merge()`` is used to combine two (or more) dataframes on the basis of values of common columns (indices can also be used, use ``left_index=True`` and/or ``right_index=True``\ ), and ``concat()`` is used to append one (or more) dataframes one below the other (or sideways, depending on whether the axis option is set to 0 or 1). 
+
+  * 
+    ``join()`` is used to merge 2 dataframes on the basis of the index; instead of using ``merge()`` with the option ``left_index=True`` we can use ``join()``.
+
+  * 
+    *\ `Hint <https://railsware.com/blog/python-for-machine-learning-pandas-axis-explained/>`_\ :* ``axis=0`` refers to the row index & ``axis=1`` to the column index.
+
+  * 
+    .. code-block:: python
+
+         pd.merge(df1, df2, left_index=True, right_index=True)
+         pd.concat([df1, df2], axis=1)
+         df1.join(df2)
+
+  * 
+    **Concat** expects the number of columns in all data frames to match (if concatenating vertically) and the number of rows in all data frames to match (if concatenating horizontally). It does *not* deal well with *linking*.
+
+  * 
+    **Append** assumes that *either* the columns or the rows will match.
+
+  * 
+    **Join** is basically a functionality-restricted merge.
+
+* 
+  How to merge according to index, I can't find the column name of the index column?
+
+----
+
+Linking Spatial Data
+~~~~~~~~~~~~~~~~~~~~
+
+
+* 
+  Sjoin 
+
+
+  * 
+    Sjoin adds an *operator* (\ ``['intersects','contains','within']``\ ) and example code can be `found on GitHub <https://github.com/jreades/i2p/blob/master/lectures/8.2-Linking_Spatial_Data.ipynb>`_.
+
+  * 
+    .. code-block:: python
+
+       gdf = gpd.GeoDataFrame(df, 
+                   geometry=gpd.points_from_xy(df.longitude, df.latitude,
+                   crs='epsg:4326')).to_crs('epsg:27700')
+       hackney = boros[boros.NAME=='Hackney'] ### easier than spatial query
+       rs = gpd.sjoin(gdf, hackney, op='within')
+
+  * 
+    Changing how to ``left``\ , ``right``\ , or ``inner`` changes the join's behaviour:
+
+  * 
+    .. code-block:: python
+
+       rs = gpd.sjoin(gdf, hackney, how='left', op='within')
+       rs.NAME.fillna('None', inplace=True)
+       ax = boros[boros.NAME=='Hackney'].plot(edgecolor='k', facecolor='none', figsize=(8,8))
+       rs.plot(ax=ax, column='NAME', legend=True)
+
+* 
+  merging data
+
+
+  * 
+    These `merge operators <https://geopandas.org/mergingdata.html##merging-data>`_ apply where ``a`` is the *left* set of features (in a GeoSeries or GeoDataFrame) and ``b`` is the *right* set:
+
+
+    * Contains: Returns ``True`` if no points of b lie outside of a and *at least one point* of b lies inside a.
+    * Within: Returns ``True`` if a’s boundary and interior intersect only with the interior of b (not its boundary or exterior).
+    * Intersects: Returns ``True`` if the boundary or interior of a intersects in any way with those of b.
+
+  * All `binary predicates <https://shapely.readthedocs.io/en/latest/manual.html##binary-predicates>`_ are supported by features of GeoPandas, though *only* these three options are available in ``sjoin`` directly.
+  * ^ Behaviour of operaions may vary with how you set up ``left`` and ``right`` tables, but you can probably think your way through it by asking: "Which features of x fall *within* features of y?" or "Do features of x contain y?" You will probably get it wrong at least a few times. That's ok.
+
+* 
+  Additional Spatial Operations
+
+
+  * These operators apply to the `GeoSeries <https://geopandas.org/reference.html##geoseries>`_ where ``a`` is a GeoSeries and ``b`` is one or more spatial features:
+  * **Contains** / **Covers**\ : Returns a ``Series`` of ``dtype('bool')`` with value ``True`` for each geometry in ``a`` that contains ``b``. These are *different*.
+  * **Crosses**\ : An object is said to cross other if its interior intersects the interior of the other but does not contain it, and the dimension of the intersection is less than the dimension of the one or the other.
+  * **Touches**\ : Returns a ``Series`` indicating which elements of ``a`` touch a point on ``b``.
+  * **Distance**\ : Returns a ``Series`` containing the distance from all ``a`` to some ``b``.
+  * **Disjoint**\ : Returns a ``Series`` indicating which elements of ``a`` do not intersect with any ``b``.
+  * **Geom Equals** / **Geom Almost Equals**\ : strict and loose tests of equality between ``a`` and ``b`` in terms of their geometry.
+  * **Buffer**\ , **Simplify**\ , **Centroid**\ , **Representative Point**\ : common transformations.
+  * **Rotate**\ , **Scale**\ , **Affine Transform**\ , **Skew**\ , **Translate**\ : less common transformations.
+  * **Unary Union**\ : aggregation of all the geometries in ``a``
+
+* 
+  Set Operations with Overlay
+
+
+  * 
+    A notebook example `can be found here <https://nbviewer.jupyter.org/github/geopandas/geopandas/blob/master/examples/overlays.ipynb>`_.
+
+  * 
+    It is also possible to apply GIS-type 'overlay' operations:
+
+      
+    .. image:: http://www.zzzhou.me/images/2020/11/29/overlay_operations.png
+       :target: http://www.zzzhou.me/images/2020/11/29/overlay_operations.png
+       :alt: 
+
+
+      `These operations <https://geopandas.org/set_operations.html##set-operations-with-overlay>`_ return indexes for ``gdf1`` and ``gdf2`` (either could be a ``NaN``\ ) together with a geometry and (usually?) columns from both data frames:
+
+    .. code-block:: python
+
+         rs_union = geopandas.overlay(gdf1, gdf2, how='union')
+
+      The set of operations includes: ``union``\ , ``intersection``\ , ``difference``\ , ``symmetric_difference``\ , and ``identity``.
+
+* 
+  Web Services
+
+  | Acronym | Means                | Does                                                         |
+  | ------- | -------------------- | ------------------------------------------------------------ |
+  | WMS     | Web Map Service      | Transfers map *images* within an area specified by bounding box; vector formats possible, but rarely used. |
+  | WFS     | Web Feature Service  | Allows interaction with features; so not about rendering maps directly, more about manipulation. |
+  | WCS     | Web Coverage Service | Transfers data about objects covering a geographical area.   |
+  | OWS     | Open Web Services    | Seems to be used by QGIS to serve data *from* a PC or server. |
+
+* 
+  Spatial Databases
+
+  There are many flavours:
+
+
+  * `Oracle <https://blogs.oracle.com/oraclespatial/spatial-now-free-with-all-editions-of-oracle-database>`_\ : good enterprise support; reasonably feature-rich.
+  * `MySQL <https://www.mysql.com/>`_\ : free; *was* feature-poor (\ `though this looks to have changed with MySQL8 <https://dev.mysql.com/doc/refman/8.0/en/spatial-function-reference.html>`_\ ).
+  * `PostreSQL <https://www.postgresql.org/>`_\ : free; standards-setting/compliant; heavyweight (requires `PostGIS <https://postgis.net/>`_\ ).
+  * Microsoft Access: um, no. 
+  * SpatiaLite: free; standards-setting/compliant; lightweight
+
+  Generally:
+
+
+  * Ad-hoc, modestly-sized, highly portable == SpatiaLite
+  * Permanent, large, weakly portable == Postgres+PostGIS
+  * Open Geospatial Consortium query stack
+
+----
+
+Grouping Data
+~~~~~~~~~~~~~
+
+
+* 
+  Aggregating functions
+
+
+  * 
+    Many of these you will have seen before:
+
+    | Method           | Achieves                        |
+    | ---------------- | ------------------------------- |
+    | count()          | Total number of items           |
+    | first(), last()  | First and last item             |
+    | mean(), median() | Mean and median                 |
+    | min(), max()     | Minimum and maximum             |
+    | std(), var()     | Standard deviation and variance |
+    | mad()            | Mean absolute deviation         |
+    | prod()           | Product of all items            |
+    | sum()            | Sum of all items                |
+
+* 
+  Grouping Operations
+
+
+  * In Pandas these follow a split / apply / combine approach:
+  * 
+    .. image:: http://www.zzzhou.me/images/2020/11/29/Split-Apply-Combine.png
+       :target: http://www.zzzhou.me/images/2020/11/29/Split-Apply-Combine.png
+       :alt: 
+
+* 
+  In Practice
+
+
+  * ``grouped_df = df.groupby(<fields>).<function>``
+
+* 
+  Grouping by Arbitrary Mappings
+
+
+  * 
+    .. code-block:: python
+
+       mapping = {'HAK':'Inner', 'TH':'Outer', 'W':'Inner'}
+       df.set_index('LA', inplace=True)
+       df.groupby(mapping).sum()
+
+  * 
+
+    .. image:: http://www.zzzhou.me/images/2020/11/29/Arbitrary_Mappings.png
+       :target: http://www.zzzhou.me/images/2020/11/29/Arbitrary_Mappings.png
+       :alt: Arbitrary_Mappings
+
+
+* 
+  Pivot Tables
+
+
+  * 
+    Commonly-used in business to summarise data for reporting.
+
+  * 
+    Grouping (summarisation) happens along both axes (Group By operates only on one).
+
+  * 
+    ``pandas.cut(<series>, <bins>)`` can be a useful feature here since it chops a continuous feature into bins suitable for grouping.
+
+  * 
+    .. code-block:: python
+
+         age = pd.cut(titanic['age'], [0, 18, 80])
+         titanic.pivot_table('survived', ['sex', age], 'class')
+
+  * 
+
+    .. image:: http://www.zzzhou.me/images/2020/11/29/Pivot_Table.png
+       :target: http://www.zzzhou.me/images/2020/11/29/Pivot_Table.png
+       :alt: Pivot_Table
+
+
+* 
+  crosstab
+
+
+  * 离散特征的交叉频率
+
+* 
+  Location Quotient
+
+
+  * `Jon's sv's sv <https://en.wikipedia.org/wiki/Peter_Haggett>`_
+  * `scaling <https://advances.sciencemag.org/content/6/34/eaba4934>`_
+  * The LQ for industry *i* in zone *z* is the share of employment for *i* in *z* divided by the share of employment of *i* in the entire region *R*.
+
+  $$
+  LQ\ *{zi} = \dfrac{Emp*\ {zi}/Emp\ *{z}}{Emp*\ {Ri}/Emp_{R}}
+  $$
+
+.. code-block::
+
+   | &nbsp;              | High Local Share | Low Local Share |
+   | ------------------- | ---------------- | --------------- |
+   | High Regional Share | $$\approx 1$$    | $$< 1$$         |
+   | Low Regional Share  | $$> 1$$          | $$\approx 1$$   |
+
+   *   in other words, this is a type of standardisation that enables to compare the concentration of Investment Bankers with the concentration of Accountants, even if there are many more Accountants than Bankers! But this can also apply to the share of flats to whole-property lettings just as easily.
+   *   Note that this is influenced by small sample sizes (e.g. the number of Fijians in Britain).
+   *   Recently,  A fabulous study about urban scaling uses Location Quotient as a measure of revealed comparative advantage and as the main observables in the model, I had never thought of this metric as historical based and widely used before, this intro is exactly what I need and really helpful.
+
+
+
+* 
+  Herfindahl-Hirschman index
+
+
+  * The HHI for an industry *i* is the sum of squared market shares for each company in that industry:
+
+  $$
+  H = \sum\ *{i=1}^{N} s*\ {i}^{2}
+  $$
+
+.. code-block::
+
+   | Concentration Level                                         |             HHI |
+   | ----------------------------------------------------------- | --------------: |
+   | Monopolistic: one firm accounts for 100% of the market      |         $$1.0$$ |
+   | Oligopolistic: top five firms account for 60% of the market | $$\approx 0.8$$ |
+   | Competitive: anything else?                                 |      $$< 0.5$$? |
+
+   *   If $s_{i} = 1$ then $s_{i}^{2} = 1$, while if $s_{i} = 0.5$ then $s_{i}^{2} = 0.25$ and $s_{i} = 0.1$ then $s_{i}^{2} = 0.01$.
+   *   This can be translated to compare, for instance, local and regional neighbourhood diversity: some cities are ethnically diverse *in aggregate* but highly segregated *at the local level*.
+   *   Note that this is influenced by the number of 'firms' (or ethnicities or...).
+
+
+
+* 
+  Shannon Entropy
+
+  $$
+  H(X) = - \sum\ *{i=1}^{n} P(x*\ {i}) log P(x_{i})
+  $$
+
+
+  * I often think of this as 'surprise': a high entropy measure means that it's hard to predict what will happen next. So randomness has high entropy. By extension, high concentration has *low* entropy (even if the result is surprising on the level of intuition: I wasn't expecting to see that) because I can predict a 6 on the next roll of the dice fairly easy if all of my previous rolls were 6s.
+
+----
+
+Data Visualization
+~~~~~~~~~~~~~~~~~~
+
+
+* 
+  Pythonic Approaches
+
+
+  * ``matplotlib``\ : the 'big beast' of visualisation in Python and offered as a default by Python, Pandas, GeoPandas, etc. Does best at 2D and 3D static visualisations. Highly customisable. Highly complex.
+  * **\ ``seaborn``\ **\ : a layer that sits over top of ``matplotlib`` and makes it easier to produce good-quality graphics.
+  * **\ ``jupyter``\ **\ : as a web-based tool Jupyter allows us, via extensions, to do rather more than just display static visualisation. 
+  * **\ ``bokeh``\ **\ : web-based visualisation tool that can be integrated to Jupyter or output to static HTML files.
+
+* 
+  Seaborn
+
+
+  * 
+    Designed to provide ggplot-\ *like* quality output using matplotlib back-end:
+
+  * 
+    Improve on default colourmaps and colour defaults.
+
+  * 
+    Integration with pandas data frames (\ *Note: no geopandas!*\ ).
+
+  * 
+    Offer more plot types out of the box.
+
+  * 
+    Still offer access to matplotlib's back-end.
+
+  * 
+
+    .. image:: http://www.zzzhou.me/images/2020/11/29/function_overview_8_0.png
+       :target: http://www.zzzhou.me/images/2020/11/29/function_overview_8_0.png
+       :alt: 
+
+
+  * 
+    .. code-block:: python
+
+         import seaborn as sns
+         sns.set_theme(style="darkgrid")
+         fmri = sns.load_dataset("fmri")
+         sns.lineplot(x="timepoint", y="signal",
+                      hue="region", style="event",
+                      data=fmri)
+
+  * 
+    configuring Seaborn
+
+      Seaborn provides a number of useful themes that act as shortcuts for setting multiple matplotlib parameters:
+
+      | Seaborn Command                                              | Accomplishes                                                 |
+      | ------------------------------------------------------------ | ------------------------------------------------------------ |
+      | `\ ``set_theme`` <https://seaborn.pydata.org/generated/seaborn.set_theme.html##seaborn.set_theme>`_\ ``(...)`` | Set multiple theme parameters in one step.                   |
+      | `\ ``axes_style`` <https://seaborn.pydata.org/generated/seaborn.axes_style.html##seaborn.axes_style>`_\ ``(...)`` | Return a parameter dict for the aesthetic style of the plots. |
+      | `\ ``set_style`` <https://seaborn.pydata.org/generated/seaborn.set_style.html##seaborn.set_style>`_\ ``(...)`` | Set the aesthetic style of the plots.                        |
+      | `\ ``plotting_context`` <https://seaborn.pydata.org/generated/seaborn.plotting_context.html##seaborn.plotting_context>`_\ ``(...)`` | Return a parameter dict to scale elements of the figure.     |
+      | `\ ``set_context`` <https://seaborn.pydata.org/generated/seaborn.set_context.html##seaborn.set_context>`_\ ``(...)`` | Set the plotting context parameters.                         |
+
+      You can also access:
+
+
+    * `Palettes <https://seaborn.pydata.org/tutorial/color_palettes.html>`_\ : colormaps can be generated using ``sns.color_palette(...)`` and set using ``sns.set_palette(...)``.
+    * `Axes Styles <https://seaborn.pydata.org/generated/seaborn.axes_style.html##seaborn.axes_style>`_\ : includes 'darkgrid', 'whitegrid', 'dark', 'white', 'ticks'
+
+* 
+  matplotlib
+
+
+  * 
+    .. image:: http://www.zzzhou.me/images/2020/11/29/sphx_glr_anatomy_001.png
+       :target: http://www.zzzhou.me/images/2020/11/29/sphx_glr_anatomy_001.png
+       :alt: 
+
+  * Confusingly, there are multiple ways to access elements of the plot and write into them:
+
+    * **Figure**\ : high-level features (\ *e.g.* title, padding, etc.). Can be accessed via ``plt.gcf()`` (\ **g**\ et **c**\ urrent **f**\ igure) or upon creation (e.g. ``f, ax = plt.subplots()`` or ``f = plt.figure()``\ ).
+    * **Axes**\ : axis-level features (e.g. labels, tics, spines, limits, etc.). Can be accessed via ``plt.gca()`` (\ **g**\ et **c**\ urrent **a**\ xes) or upon creation (e.g. ``f, ax = plt.subplots()`` or ``ax = f.add_subplot(1,1,1)``\ ).
+
+* 
+  Saving Outputs
+
+
+  * 
+    Straightforward via `save figure <https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.savefig.html>`_ function, but lots of options!
+
+    .. code-block:: python
+
+       plt.savefig(fname, dpi=None, facecolor='w', edgecolor='w',
+       orientation='portrait', papertype=None, format=None,
+       transparent=False, bbox_inches=None, pad_inches=0.1,
+       frameon=None, metadata=None)
+
+  * 
+    dpi >300 for publication, dpi <150 for presentation
+
+  * The format can be largely determined by the file extension in the ``fname`` (file name) and the supported formats depends on what you've installed! You can find out waht's available using: ``plt.gcf().canvas.get_supported_filetypes()``. 
+
+* 
+  Jupyter 
+
+
+  * Make the static plot zoomable and pannable using ``%matplotlib widget`` (declare this at the top of your notebook).
+  * Make the plot more directly interactive using ``ipywidgets`` (import ``interact`` and related libs as needed).
+  * Use a browser-based visualisation tool such as ``bokeh`` or ``d3`` (format may be very, very different from what you are 'used to' in Python).
+
+* 
+  widgets
+
+
+  * 
+    .. code-block:: python
+
+        %matplotlib widget
+        rs = gpd.sjoin(gdf, hackney, how='left', op='within')
+        rs.NAME.fillna('None', inplace=True)
+        ax = hackney.plot(edgecolor='k', facecolor='none')
+        rs.plot(ax=ax, column='NAME', legend=True)
+
+* 
+  Interact()
+
+
+  * 
+    Taking an example from `Dani's work <https://darribas.org/gds_course/content/bH/lab_H.html##advanced-plotting>`_\ :
+
+  * 
+    .. code-block:: python
+
+        from ipywidgets import interact
+        ## Alternatives: interactive, fixed, interact_manual
+        interact(
+            <function>, ## Function to make interactive
+            <param0>,   ## e.g. Data to use
+            <param1>,   ## e.g. Range start/end/step
+            <param2>    ## e.g. Fixed value
+        );
+
+* 
+  ### Bokeh
+
+
+  * 
+    .. image:: https://github.com/jreades/i2p/raw/master/lectures/img/Bokeh.png
+       :target: https://github.com/jreades/i2p/raw/master/lectures/img/Bokeh.png
+       :alt: 
+
+* 
+  Automation
+
+  Because of the way that matplotlib and Jupyter work, all resources built on top of these 'platforms' can, to some extent, be automated using functions. For example to draw circles and place text:
+
+  .. code-block:: python
+
+     def circle(x, y, radius=0.15):
+         from matplotlib.patches import Circle
+         from matplotlib.patheffects import withStroke
+         circle = Circle((x, y), radius, clip_on=False, zorder=10, 
+                         linewidth=1, edgecolor='black', 
+                         facecolor=(0, 0, 0, .0125),
+                         path_effects=[withStroke(linewidth=5, 
+                                       foreground='w')])
+         ax.add_artist(circle)
+
+     def text(x, y, text):
+         ax.text(x, y, text, backgroundcolor="white",
+              ha='center', va='top', weight='bold', color='blue')
+
+`gds_courses <https://darribas.org/gds_course/content/bH/lab_H.html##advanced-plotting>`_
+
+Readings
+^^^^^^^^
+
+
+* [@dignazio:2020, chap. 3] On Rational, Scientific, Objective Viewpoints from Mythical, Imaginary, Impossible Standpoints in Data Feminism; `Pre-review URL <https://bookbook.pubpub.org/pub/8tjbs2x5>`_
+* Badger, E. and Bui, Q. and Gebeloff, R. (2019) Neighborhood Is Mostly Black. The Home Buyers Are Mostly White. New York Times `URL <https://www.nytimes.com/interactive/2019/04/27/upshot/diversity-housing-maps-raleigh-gentrification.html>`_
+
+Padlet
+^^^^^^
+
+ `Collaborative Agenda <https://padlet.com/jreades1/iwn12kf61hfyhbx5>`_
